@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TeamFeedbackPro.Controller.Controllers
@@ -6,6 +7,12 @@ namespace TeamFeedbackPro.Controller.Controllers
     [Route("api/messages")]
     public class MessagesController : ControllerBase
     {
-        
+        [HttpGet]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetTest()
+        {
+            return Ok("Obtendo mensagens");
+        }
     }
 }

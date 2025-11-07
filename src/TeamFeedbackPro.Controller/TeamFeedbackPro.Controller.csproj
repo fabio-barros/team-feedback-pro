@@ -10,4 +10,8 @@
     <Folder Include="Repositories\NewFolder\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.6" />
+  </ItemGroup>
+
 </Project>
