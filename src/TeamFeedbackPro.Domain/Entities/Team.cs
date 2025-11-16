@@ -1,10 +1,7 @@
-﻿
-using System;
-using System.Collections.Generic;
-namespace TeamFeedbackPro.Domain.Entities;
+﻿namespace TeamFeedbackPro.Domain.Entities;
 public class Team : BaseEntity
 {
-    public string Name { get; private set; }
+    public string Name { get; private set; } = string.Empty;
     public Guid? ManagerId { get; private set; }
 
     // Navigation Properties
