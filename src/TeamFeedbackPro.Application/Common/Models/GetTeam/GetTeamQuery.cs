@@ -1,0 +1,7 @@
+﻿using MediatR;
+using System.IO.Pipelines;
+using TeamFeedbackPro.Application.Common.Models;
+
+namespace TeamFeedbackPro.Application.Common.Models.GetTeam;
+
+public record GetTeamQuery(Guid Id) : IRequest<Result<TeamResult>>;

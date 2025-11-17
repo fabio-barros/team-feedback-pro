@@ -1,42 +1,41 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TeamFeedbackPro.Application.Common.Abstractions;
 using TeamFeedbackPro.Application.Common.Interfaces;
 using TeamFeedbackPro.Domain.Entities;
-using TeamFeedBackPro.Infrastructure.Persistence;
 
-namespace TeamFeedbackPro.Infrastructure.Persistence.Repositories;
+namespace TeamFeedBackPro.Infrastructure.Persistence.Repositories;
 
-public class TeamRepository : ITeamRepository
+public class TeamRepository(ApplicationDbContext context) : ITeamRepository
 {
-    private readonly ApplicationDbContext _context;
-
-    public TeamRepository(ApplicationDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task<Team?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _context.Teams
+        return await context.Teams
             .Include(t => t.Members)
             .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
     }
 
+    public async Task<IEnumerable<Team>> GetAllAsync(CancellationToken cancellationToken = default)
+    {
+        return await context.Teams
+            .Include(t => t.Members)
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<Team> AddAsync(Team team, CancellationToken cancellationToken = default)
     {
-        await _context.Teams.AddAsync(team, cancellationToken);
+        await context.Teams.AddAsync(team, cancellationToken);
         return team;
     }
 
     public Task UpdateAsync(Team team, CancellationToken cancellationToken = default)
     {
-        _context.Teams.Update(team);
+        context.Teams.Update(team);
         return Task.CompletedTask;
     }
 
-    public async Task<IEnumerable<Team>> GetAllAsync(CancellationToken cancellationToken = default)
+    public Task DeleteAsync(Team team, CancellationToken cancellationToken = default)
     {
-        return await _context.Teams
-            .Include(t => t.Members)
-            .ToListAsync(cancellationToken);
+        context.Teams.Remove(team);
+        return Task.CompletedTask;
     }
 }

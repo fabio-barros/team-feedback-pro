@@ -8,7 +8,6 @@ using TeamFeedbackPro.Application.Common.Abstractions;
 using TeamFeedbackPro.Application.Common.Interfaces;
 using TeamFeedBackPro.Infrastructure.Authentication;
 using TeamFeedBackPro.Infrastructure.Persistence;
-using TeamFeedbackPro.Infrastructure.Persistence.Repositories;
 using TeamFeedBackPro.Infrastructure.Persistence.Repositories;
 
 namespace TeamFeedBackPro.Infrastructure;
@@ -79,7 +78,14 @@ public static class DependencyInjection
                 };
             });
 
-        services.AddAuthorization();
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("AdminOnly", policy =>
+                policy.RequireRole("Admin"));
+
+            options.AddPolicy("ManagerOrAdmin", policy =>
+                policy.RequireRole("Manager", "Admin"));
+        });
 
         return services;
     }
