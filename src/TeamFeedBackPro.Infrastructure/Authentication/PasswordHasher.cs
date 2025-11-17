@@ -1,4 +1,4 @@
-﻿using TeamFeedbackPro.Application.Common.Interfaces;
+﻿using TeamFeedbackPro.Application.Common.Abstractions;
 
 namespace TeamFeedBackPro.Infrastructure.Authentication;
 public class PasswordHasher : IPasswordHasher

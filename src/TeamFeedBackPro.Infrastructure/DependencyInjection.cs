@@ -5,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using TeamFeedbackPro.Application.Common.Abstractions;
-using TeamFeedbackPro.Application.Common.Interfaces;
 using TeamFeedBackPro.Infrastructure.Authentication;
 using TeamFeedBackPro.Infrastructure.Persistence;
 using TeamFeedBackPro.Infrastructure.Persistence.Repositories;
@@ -36,7 +35,7 @@ public static class DependencyInjection
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ITeamRepository, TeamRepository>();
-        //services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+        services.AddScoped<IFeedbackRepository, FeedbackRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;

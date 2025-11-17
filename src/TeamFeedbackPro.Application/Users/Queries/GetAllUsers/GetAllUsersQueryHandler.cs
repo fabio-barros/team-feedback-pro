@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using TeamFeedbackPro.Application.Common.Abstractions;
-using TeamFeedbackPro.Application.Common.Interfaces;
 using TeamFeedbackPro.Application.Common.Models;
 
 namespace TeamFeedbackPro.Application.Users.Queries.GetAllUsers;

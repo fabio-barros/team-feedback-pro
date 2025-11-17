@@ -1,6 +1,4 @@
 ﻿using MediatR;
-using System.IO.Pipelines;
-using TeamFeedbackPro.Application.Common.Models;
 
 namespace TeamFeedbackPro.Application.Common.Models.GetTeam;
 

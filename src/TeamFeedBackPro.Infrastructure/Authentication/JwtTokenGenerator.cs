@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using TeamFeedbackPro.Application.Common.Interfaces;
+using TeamFeedbackPro.Application.Common.Abstractions;
 using TeamFeedbackPro.Domain.Enums;
 
 namespace TeamFeedBackPro.Infrastructure.Authentication;
