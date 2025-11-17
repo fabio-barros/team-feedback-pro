@@ -1,0 +1,83 @@
+﻿using MediatR;
+using Microsoft.Extensions.Logging;
+using TeamFeedbackPro.Application.Common;
+using TeamFeedbackPro.Application.Common.Abstractions;
+using TeamFeedbackPro.Application.Common.Models;
+using TeamFeedbackPro.Domain.Entities;
+
+namespace TeamFeedbackPro.Application.Feedbacks.Commands.CreateFeedback;
+
+public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackCommand, Result<FeedbackResult>>
+{
+    private readonly IFeedbackRepository _feedbackRepository;
+    private readonly IUserRepository _userRepository;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<CreateFeedbackCommandHandler> _logger;
+
+    public CreateFeedbackCommandHandler(
+        IFeedbackRepository feedbackRepository,
+        IUserRepository userRepository,
+        IUnitOfWork unitOfWork,
+        ILogger<CreateFeedbackCommandHandler> logger)
+    {
+        _feedbackRepository = feedbackRepository;
+        _userRepository = userRepository;
+        _unitOfWork = unitOfWork;
+        _logger = logger;
+    }
+
+    public async Task<Result<FeedbackResult>> Handle(CreateFeedbackCommand request, CancellationToken cancellationToken)
+    {
+        _logger.LogInformation("Creating feedback from {AuthorId} to {RecipientId}", request.AuthorId, request.RecipientId);
+
+        // Validate author exists
+        var author = await _userRepository.GetByIdAsync(request.AuthorId, cancellationToken);
+        if (author is null)
+        {
+            _logger.LogWarning("Author not found {AuthorId}", request.AuthorId);
+            return Result.Failure<FeedbackResult>(ErrorMessages.UserNotFound);
+        }
+
+        // Validate recipient exists
+        var recipient = await _userRepository.GetByIdAsync(request.RecipientId, cancellationToken);
+        if (recipient is null)
+        {
+            _logger.LogWarning("Recipient not found {RecipientId}", request.RecipientId);
+            return Result.Failure<FeedbackResult>("Recipient user not found");
+        }
+
+        // Validate both are in the same team
+        if (!author.TeamId.HasValue || author.TeamId != recipient.TeamId)
+        {
+            _logger.LogWarning("Author {AuthorId} and recipient {RecipientId} are not in the same team",
+                request.AuthorId, request.RecipientId);
+            return Result.Failure<FeedbackResult>("Author and recipient must be in the same team");
+        }
+
+        var feedback = new Feedback(
+            request.AuthorId,
+            request.RecipientId,
+            request.Type,
+            request.Category,
+            request.Content,
+            request.IsAnonymous
+        );
+
+        await _feedbackRepository.AddAsync(feedback, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+        _logger.LogInformation("Feedback created successfully {FeedbackId}", feedback.Id);
+
+        return Result.Success(new FeedbackResult(
+            feedback.Id,
+            feedback.AuthorId,
+            feedback.RecipientId,
+            feedback.Type.ToString(),
+            feedback.Category.ToString(),
+            feedback.Content,
+            feedback.IsAnonymous,
+            feedback.Status.ToString(),
+            feedback.CreatedAt
+        ));
+    }
+}

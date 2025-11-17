@@ -1,0 +1,145 @@
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using FluentValidation;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using TeamFeedbackPro.Api.Contracts;
+using TeamFeedbackPro.Application.Common.Models;
+using TeamFeedbackPro.Application.Feedbacks.Commands.CreateFeedback;
+using TeamFeedbackPro.Application.Feedbacks.Queries.GetSentFeedbacks;
+using TeamFeedbackPro.Application.Users.Queries.GetTeamMembers;
+using TeamFeedbackPro.Domain.Enums;
+
+namespace TeamFeedbackPro.Api.Endpoints;
+
+/// <summary>
+/// Provides Minimal API endpoints for managing Feedback entities.
+/// All endpoints are grouped under /api/feedbacks and support OpenAPI documentation.
+/// </summary>
+public static class FeedbackEndpoints
+{
+    /// <summary>
+    /// Maps Feedback endpoints to the application route builder.
+    /// </summary>
+    /// <param name="app">The endpoint route builder.</param>
+    /// <returns>The endpoint route builder with Feedback endpoints mapped.</returns>
+    public static IEndpointRouteBuilder MapFeedbackEndpoints(this IEndpointRouteBuilder app)
+    {
+        var feedbackGroup = app.MapGroup("/api/feedbacks")
+            .WithTags("Feedbacks")
+            .RequireAuthorization()
+            .WithOpenApi();
+
+        feedbackGroup.MapPost("/", CreateFeedback)
+            .WithName("CreateFeedback")
+            .WithSummary("Create a new feedback")
+            .WithDescription("Creates a new feedback for a team member. Author and recipient must be in the same team.")
+            .Produces<FeedbackResult>(201, contentType: "application/json")
+            .ProducesProblem(400)
+            .ProducesProblem(403)
+            .ProducesValidationProblem()
+            .WithOpenApi(op =>
+            {
+                op.RequestBody.Description = "Feedback details including recipient, type, category, content (20-2000 chars), and anonymity flag.";
+                return op;
+            });
+
+        feedbackGroup.MapGet("/sent", GetSentFeedbacks)
+            .WithName("GetSentFeedbacks")
+            .WithSummary("Get sent feedbacks")
+            .WithDescription("Retrieves feedbacks sent by the authenticated user with optional filtering and pagination.")
+            .Produces<PaginatedResult<FeedbackResult>>(200, contentType: "application/json")
+            .WithOpenApi();
+
+        var usersGroup = app.MapGroup("/api/users")
+            .WithTags("Users")
+            .RequireAuthorization()
+            .WithOpenApi();
+
+        usersGroup.MapGet("/team-members", GetTeamMembers)
+            .WithName("GetTeamMembers")
+            .WithSummary("Get team members")
+            .WithDescription("Retrieves all members of the authenticated user's team (excluding the user themselves).")
+            .Produces<IEnumerable<TeamMemberResult>>(200, contentType: "application/json")
+            .WithOpenApi();
+
+        return app;
+    }
+
+    private static async Task<IResult> CreateFeedback(
+        [FromBody] CreateFeedbackRequest request,
+        ClaimsPrincipal user,
+        ISender mediator,
+        IValidator<CreateFeedbackCommand> validator,
+        CancellationToken cancellationToken)
+    {
+        var userIdClaim = user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+        if (!Guid.TryParse(userIdClaim, out var authorId))
+        {
+            return Results.Unauthorized();
+        }
+
+        var command = new CreateFeedbackCommand(
+            authorId,
+            request.RecipientId,
+            request.Type,
+            request.Category,
+            request.Content,
+            request.IsAnonymous
+        );
+
+        var validationResult = await validator.ValidateAsync(command, cancellationToken);
+        if (!validationResult.IsValid)
+            return Results.ValidationProblem(validationResult.ToDictionary());
+
+        var result = await mediator.Send(command, cancellationToken);
+
+        return result.IsFailure
+            ? Results.BadRequest(new { message = result.Error })
+            : Results.Created($"/api/feedbacks/{result.Value.Id}", result.Value);
+    }
+
+    private static async Task<IResult> GetSentFeedbacks(
+        ClaimsPrincipal user,
+        ISender mediator,
+        [FromQuery] FeedbackStatus? status,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10,
+        CancellationToken cancellationToken = default)
+    {
+        var userIdClaim = user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+        if (!Guid.TryParse(userIdClaim, out var authorId))
+        {
+            return Results.Unauthorized();
+        }
+
+        if (page < 1) page = 1;
+        if (pageSize < 1 || pageSize > 100) pageSize = 10;
+
+        var query = new GetSentFeedbacksQuery(authorId, status, page, pageSize);
+        var result = await mediator.Send(query, cancellationToken);
+
+        return result.IsFailure
+            ? Results.BadRequest(new { message = result.Error })
+            : Results.Ok(result.Value);
+    }
+
+    private static async Task<IResult> GetTeamMembers(
+        ClaimsPrincipal user,
+        ISender mediator,
+        CancellationToken cancellationToken)
+    {
+        var userIdClaim = user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+        if (!Guid.TryParse(userIdClaim, out var userId))
+        {
+            return Results.Unauthorized();
+        }
+
+        var query = new GetTeamMembersQuery(userId);
+        var result = await mediator.Send(query, cancellationToken);
+
+        return result.IsFailure
+            ? Results.BadRequest(new { message = result.Error })
+            : Results.Ok(result.Value);
+    }
+}
