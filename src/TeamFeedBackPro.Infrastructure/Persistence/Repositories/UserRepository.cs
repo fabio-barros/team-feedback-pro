@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TeamFeedbackPro.Application.Common.Abstractions;
 using TeamFeedbackPro.Application.Common.Interfaces;
 using TeamFeedbackPro.Domain.Entities;
 
 namespace TeamFeedBackPro.Infrastructure.Persistence.Repositories;
-
 
 public class UserRepository(ApplicationDbContext context) : IUserRepository
 {
@@ -27,6 +27,13 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
             .AnyAsync(u => u.Email == email.ToLowerInvariant(), cancellationToken);
     }
 
+    public async Task<IEnumerable<User>> GetAllAsync(CancellationToken cancellationToken = default)
+    {
+        return await context.Users
+            .Include(u => u.Team)
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<User> AddAsync(User user, CancellationToken cancellationToken = default)
     {
         await context.Users.AddAsync(user, cancellationToken);
@@ -36,6 +43,12 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
     public Task UpdateAsync(User user, CancellationToken cancellationToken = default)
     {
         context.Users.Update(user);
+        return Task.CompletedTask;
+    }
+
+    public Task DeleteAsync(User user, CancellationToken cancellationToken = default)
+    {
+        context.Users.Remove(user);
         return Task.CompletedTask;
     }
 

@@ -32,6 +32,14 @@ public class User : BaseEntity
         Role = role;
         TeamId = teamId;
     }
+    public void UpdateName(string newName)
+    {
+        if (string.IsNullOrWhiteSpace(newName))
+            throw new ArgumentException("Name cannot be empty", nameof(newName));
+
+        Name = newName.Trim();
+        UpdatedAt = DateTime.UtcNow;
+    }
 
     public void UpdatePassword(string newPasswordHash)
     {
