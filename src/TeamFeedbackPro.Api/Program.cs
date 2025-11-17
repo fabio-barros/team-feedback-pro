@@ -2,6 +2,7 @@ using TeamFeedbackPro.Api.Endpoints;
 using TeamFeedbackPro.Application;
 using TeamFeedBackPro.Infrastructure;
 using TeamFeedbackPro.Api.Extensions;
+using TeamFeedBackPro.Infrastructure.Persistence.Seeding;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +37,8 @@ if (app.Environment.IsDevelopment())
         c.DocumentTitle = "TeamFeedbackPro API";
         c.DisplayRequestDuration();
     });
+    await app.MigrateAndSeedAsync();
+
 }
 
 //app.MapOpenApi();

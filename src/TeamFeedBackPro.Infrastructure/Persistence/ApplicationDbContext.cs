@@ -2,13 +2,8 @@
 using TeamFeedbackPro.Domain.Entities;
 
 namespace TeamFeedBackPro.Infrastructure.Persistence;
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
 {
-    public ApplicationDbContext(DbContextOptions options)
-        : base(options)
-    {
-    }
-
     public DbSet<User> Users => Set<User>();
     public DbSet<Team> Teams => Set<Team>();
 
