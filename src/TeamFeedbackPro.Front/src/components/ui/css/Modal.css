@@ -1,0 +1,78 @@
+/* O fundo escuro que cobre a tela inteira */
+.modal__overlay {
+  position: fixed; /* Fica fixo na tela */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6); /* Preto com 60% de transparência */
+  
+  /* Usa flex para centralizar o conteúdo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* Garante que fique acima de tudo */
+  z-index: 1000; 
+}
+
+/* A caixa branca no meio */
+.modal__content {
+  background-color: var(--cor-cinza);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  
+  width: 90%; /* Ocupa 90% da tela em celulares */
+  max-width: 500px; /* Mas no máximo 500px em telas grandes */
+  
+  /* Animação sutil de "zoom" ao abrir */
+  animation: modal-zoom-in 0.2s ease-out;
+}
+
+/* O cabeçalho do modal */
+.modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--cor-borda, #E2E8F0);
+}
+
+.modal__title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--cor-texto, #1A202C);
+}
+
+/* Botão 'X' de fechar */
+.modal__close-btn {
+  background: transparent;
+  border: none;
+  font-size: 2rem; /* Aumenta o tamanho do '&times;' */
+  line-height: 1;
+  color: var(--cor-texto-secundario, #A0AEC0);
+  cursor: pointer;
+  padding: 0;
+}
+
+.modal__close-btn:hover {
+  color: var(--cor-texto, #1A202C);
+}
+
+/* O corpo onde o <form> entra */
+.modal__body {
+  padding: 1.5rem;
+}
+
+/* Animação de entrada */
+@keyframes modal-zoom-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

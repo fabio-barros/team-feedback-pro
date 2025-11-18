@@ -1,0 +1,35 @@
+.nav {
+  width: 240px;
+  height: 100%;
+  background-color: #828588;
+  border-right: 1px solid var(--cor-borda);
+  padding: 1.5rem 0;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-button {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background-color: transparent;
+  border: none;
+  text-align: left;
+  font-size: 1rem;
+  color: var(--cor-texto-principal);
+  cursor: pointer;
+  border-left: 3px solid transparent; 
+}
+
+.nav-button:hover {
+  background-color: #317bc5;
+}
+
+.nav-button.active {
+  color: var(--cor-texto-principal);
+  font-weight: 600;
+  border-left-color: var(--cor-primaria);
+}

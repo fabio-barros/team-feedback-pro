@@ -1,0 +1,68 @@
+
+.card {
+  background-color: var(--cor-fundo);
+  border: 2px solid #a0aefd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(226, 225, 228, 0.05);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid var(--cor-borda);
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.card-titulo {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--cor-texto);
+  margin: 0;
+}
+
+.card-cargo {
+  font-size: 0.9rem;
+  color: var(--cor-texto-secundario);
+}
+
+.card-mensagem {
+  color: var(--cor-texto);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.card-footer {
+  text-align: right;
+  font-size: 0.8rem;
+  color: var(--cor-texto-secundario);
+  margin-top: 1rem;
+}
+
+/* --- Status Badge --- */
+.status-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.status--aprovado {
+  background-color: #affdc8; 
+  
+  color: var(--cor-texto);
+}
+
+.status--rejeitado {
+  background-color: #f7aeae; 
+  color: var(--cor-erro);
+}
+
+.status--pendente {
+  background-color: #f7deb0; 
+  color: var(--cor-aviso);
+}

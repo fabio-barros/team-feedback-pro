@@ -1,0 +1,52 @@
+
+.homepage-layout {
+  display: flex;
+  height: 100vh; 
+  width: 100vw;  
+  overflow: hidden; 
+}
+
+.homepage-content {
+  flex-grow: 1; 
+  height: 100%; 
+  display: flex; 
+  flex-direction: column;
+}
+
+.content-welcome {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.content-welcome h1 {
+  margin-bottom: 0.5rem;
+}
+.content-welcome p {
+  margin-bottom: 1.5rem;
+  color: var(--cor-texto-secundario);
+}
+
+.content-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%; 
+  padding: 1.5rem 2rem;
+}
+
+.content-list-wrapper h2 {
+  margin: 0 0 1rem 0;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+
+.scrollable-list-area {
+  flex-grow: 1; 
+  overflow-y: auto; 
+  padding-right: 1rem; 
+}
