@@ -382,3 +382,8 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+package-lock.json
+.vscode/launch.json
+src/TeamFeedbackPro.Front/package-lock.json
+src/TeamFeedbackPro.Front/package-lock.json
+src/TeamFeedbackPro.Front/package-lock.json

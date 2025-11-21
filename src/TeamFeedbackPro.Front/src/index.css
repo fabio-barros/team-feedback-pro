@@ -1,8 +1,18 @@
+/* ------------------------------
+   IMPORTAÇÃO DAS FONTES (Google Fonts)
+------------------------------ */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+
+  /* --- Fontes padrão do sistema --- */
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
+
+ /* --- Cores temas/variáveis --- */
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
@@ -31,7 +41,37 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+
+/* ------------------------------
+     HIERARQUIA TIPOGRÁFICA
+  ------------------------------ */
+
+/* --- Poppins para Títulos ---*/
+  --font-display: "Poppins", sans-serif;
+
+  /* Inter para Corpo */
+  --font-interface: "Inter", sans-serif;
+
+  /*--- Tamanhos ---*/
+  --h1-size: 48px;
+  --h2-size: 36px;
+  --h3-size: 24px;
+  --body-size: 16px;
+  --small-size: 14px;
+
+  /*--- Pesos ---*/
+  --extra-bold: 800;
+  --bold: 700;
+  --semibold: 600;
+  --medium: 500;
+  --regular: 400;
+  --light: 300;
 }
+
+/* ------------------------------
+   ELEMENTOS BASE
+------------------------------ */
 
 a {
   font-weight: 500;
@@ -44,24 +84,69 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  display: flex;
+  place-items: center;
+  font-family: var(--font-interface);
+  font-size: var(--body-size);
+  color: var(--cor-texto);
 }
 
+
+/* ------------------------------
+   TÍTULOS COM POPPINS
+------------------------------ */
 h1 {
-  font-size: 3.2em;
+  font-family: var(--font-display);
+  font-weight: var(--bold);
+  font-size: var(--h1-size);
   line-height: 1.1;
 }
+
+h2 {
+  font-family: var(--font-display);
+  font-weight: var(--semibold);
+  font-size: var(--h2-size);
+}
+
+h3 {
+  font-family: var(--font-interface);
+  font-weight: var(--semibold);
+  font-size: var(--h3-size);
+}
+
+
+/* ------------------------------
+   TEXTO PADRÃO / INTER
+------------------------------ */
+
+p {
+  font-family: var(--font-interface);
+  font-weight: var(--regular);
+  font-size: var(--body-size);
+  line-height: 1.6;
+}
+
+.small {
+  font-size: var(--small-size);
+  font-weight: var(--regular);
+  color: var(--cor-texto-secundario);
+}
+
+
+/* ------------------------------
+   BOTÕES (Inter SemiBold)
+------------------------------ */
+
 
 button {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
+  font-size: 16px;
+  font-weight: var(--semibold);
+  font-family: var(--font-interface);
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
@@ -69,10 +154,17 @@ button {
 button:hover {
   border-color: #646cff;
 }
+/*-- Foco padrão --*/
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
+
+
+/* ------------------------------
+   LIGHT MODE
+------------------------------ */
+
 
 @media (prefers-color-scheme: light) {
   :root {
