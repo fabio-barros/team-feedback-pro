@@ -6,5 +6,6 @@ public static class ErrorMessages
     public const string UserNotFound = "User not found";
     public const string InvalidCredentials = "Invalid credentials";
     public const string TeamNotFound = "Team not found";
+    public const string TeamMembersNotFound = "Team members not found";
 
 }

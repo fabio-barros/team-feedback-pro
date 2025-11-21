@@ -5,7 +5,9 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TeamFeedbackPro.Api.Contracts;
 using TeamFeedbackPro.Application.Common.Models;
+using TeamFeedbackPro.Application.Common.Models.FeedbackForm;
 using TeamFeedbackPro.Application.Feedbacks.Commands.CreateFeedback;
+using TeamFeedbackPro.Application.Feedbacks.Queries.GetFeedbackFormData;
 using TeamFeedbackPro.Application.Feedbacks.Queries.GetSentFeedbacks;
 using TeamFeedbackPro.Application.Users.Queries.GetTeamMembers;
 using TeamFeedbackPro.Domain.Enums;
@@ -49,6 +51,14 @@ public static class FeedbackEndpoints
             .WithSummary("Get sent feedbacks")
             .WithDescription("Retrieves feedbacks sent by the authenticated user with optional filtering and pagination.")
             .Produces<PaginatedResult<FeedbackResult>>(200, contentType: "application/json")
+            .WithOpenApi();
+
+        feedbackGroup.MapGet("/feedback-form-data", GetFeedbackFormData)
+            .WithName("GetFeedbackFormData")
+            .WithSummary("Get data for feedback form")
+            .WithDescription("Retrieves necessaries data for send a feedback")
+            .Produces<FeedbackFormDataResult>(200, contentType: "application/json")
+            .ProducesProblem(401)
             .WithOpenApi();
 
         var usersGroup = app.MapGroup("/api/users")
@@ -136,6 +146,24 @@ public static class FeedbackEndpoints
         }
 
         var query = new GetTeamMembersQuery(userId);
+        var result = await mediator.Send(query, cancellationToken);
+
+        return result.IsFailure
+            ? Results.BadRequest(new { message = result.Error })
+            : Results.Ok(result.Value);
+    }
+
+    private static async Task<IResult> GetFeedbackFormData(
+        ClaimsPrincipal user,
+        ISender mediator,
+        CancellationToken cancellationToken)
+    {
+        var userIdClaim = user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+        if (!Guid.TryParse(userIdClaim, out var userId))
+        {
+            return Results.Unauthorized();
+        }
+        var query = new GetFeedbackFormDataQuery(userId);
         var result = await mediator.Send(query, cancellationToken);
 
         return result.IsFailure
