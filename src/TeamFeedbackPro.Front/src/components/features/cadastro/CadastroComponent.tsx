@@ -11,12 +11,12 @@ export const CadastroComponent = () => {
 
       <div className="form-row">
         <label htmlFor="email">Email</label>
-        <input name="email" id="email" type="email" />
+        <input name="email" id="email" type="email" required/>
       </div>
 
       <div className="form-row">
         <label htmlFor="cargo">Cargo</label>
-        <select name="cargo" id="cargo">
+        <select name="cargo" id="cargo" required>
           <option value="1">Editor</option>
           <option value="2">Coordenador</option>
           <option value="3">Direção</option>
@@ -34,12 +34,12 @@ export const CadastroComponent = () => {
 
       <div className="form-row">
         <label htmlFor="pass">Senha</label>
-        <input name="pass" id="pass" type="password" />
+        <input name="pass" id="pass" type="password" required/>
       </div>
 
       <div className="form-row">
         <label htmlFor="pass2">Repetir senha</label>
-        <input name="pass2" id="pass2" type="password" />
+        <input name="pass2" id="pass2" type="password" required/>
       </div>
 
       <div className="form-actions">

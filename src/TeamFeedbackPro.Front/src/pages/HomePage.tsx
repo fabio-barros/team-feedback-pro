@@ -8,8 +8,7 @@ import { Spinner } from '../components/ui/Spinner';
 import { getFeedbacksRecebidos } from '../services/feedbackService.mock';
 import { getFeedbacksEnviados } from '../services/feedbackService.mock';
 import type { Feedback } from '../types';
-
-import { CadastroComponent } from '../components/features/feedback/CadastroComponent';
+import { CadastroComponent } from '../components/features/cadastro/CadastroComponent';
 
 import './css/HomePage.css';
 
