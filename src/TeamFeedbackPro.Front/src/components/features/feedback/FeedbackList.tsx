@@ -1,10 +1,10 @@
 import React from 'react';
-import type { Feedback } from '../../../types';
+import type { FeedbackResult } from '../../../types';
 import { FeedbackCard } from './FeedbackCard';
 import './css/FeedbackList.css'; 
 
 type FeedbackListProps = {
-  feedbacks: Feedback[];
+  feedbacks: FeedbackResult[];
   perspectiva: 'target' | 'author';
 };
 

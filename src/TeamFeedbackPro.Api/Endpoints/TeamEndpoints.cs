@@ -32,6 +32,7 @@ public static class TeamEndpoints
             .WithOpenApi();
 
         group.MapGet("/", GetAllTeams)
+            .AllowAnonymous()
             .WithName("GetAllTeams")
             .WithSummary("Get all teams")
             .WithDescription("Retrieves a list of all teams with their members.")

@@ -1,67 +1,125 @@
+import { 
+  FeedbackType, 
+  FeedbackCategory, 
+  type FeedbackResult, 
+  type PaginatedResult, 
+  type CreateFeedbackRequest,
+  type TeamMemberResult,
+  type FeedbackStatus,
+  type FeedbackFormDataResult
+} from '../types';
 
-import type { Feedback } from '../types'; 
+// --- DADOS MOCKADOS (FAKE DB) ---
 
-// --- Nosso "Banco de Dados Falso" ---
+const CURRENT_USER_ID = 'user-logado-123';
 
-const FAKE_USER_FABIO = { id: 1, nome: 'Fábio Ribeiro', cargo: 'Dev Sênior' };
-const FAKE_USER_ALINE = { id: 2, nome: 'Aline Limeira', cargo: 'Product Manager' };
-const FAKE_USER_LOGADO = { id: 3, nome: 'Gabriel Reis', cargo: 'Dev Pleno' };
-
-const FAKE_DB_RECEBIDOS: Feedback[] = [
-  {
-    id: 'fb-001',
-    mensagem: 'Parabéns pelo ótimo trabalho no projeto X, sua organização foi chave!',
-    dataEnvio: '2025-11-12T10:30:00Z',
-    author: FAKE_USER_ALINE,
-    target: FAKE_USER_LOGADO,
-    status: 'aprovado', 
-  },
-  
+const MOCK_USERS: TeamMemberResult[] = [
+  { id: 'user-456', name: 'Aline Gerente', email: 'aline@empresa.com', role: 'Manager' },
+  { id: 'user-789', name: 'Gabriel R Colega', email: 'gabrielr@empresa.com', role: 'Member' },
+  { id: 'user-999', name: 'Fabio Tech Lead', email: 'fabio@empresa.com', role: 'Admin' },
 ];
 
-const FAKE_DB_ENVIADOS: Feedback[] = [
+let FAKE_FEEDBACKS: FeedbackResult[] = [
   {
-    id: 'fb-003',
-    mensagem: 'Aline, obrigado pela ajuda no refinamento das tasks. Foi muito produtivo.',
-    dataEnvio: '2025-11-09T09:15:00Z',
-    author: FAKE_USER_LOGADO,
-    target: FAKE_USER_ALINE,
-    status: 'aprovado', 
+    id: 'fb-1',
+    authorId: 'user-456',
+    authorName: 'Aline Gerente',
+    recipientId: CURRENT_USER_ID,
+    recipientName: 'Você',
+    content: 'Excelente evolução técnica no último projeto, parabéns pela dedicação!',
+    status: 'Approved',
+    createdAt: new Date('2023-11-20').toISOString(),
+    // @ts-ignore 
+    type: FeedbackType.Praise, 
+    // @ts-ignore
+    category: FeedbackCategory.Technical 
   },
   {
-    id: 'fb-002',
-    mensagem: 'Gostei muito da sua apresentação na review, bem clara.',
-    dataEnvio: '2025-11-10T14:00:00Z',
-    author: FAKE_USER_LOGADO,
-    target: FAKE_USER_FABIO,
-    status: 'pendente', 
-  },
+    id: 'fb-2',
+    authorId: CURRENT_USER_ID,
+    authorName: 'Você',
+    recipientId: 'user-789',
+    recipientName: 'Gabriel R Colega',
+    content: 'Gabriel, precisamos alinhar melhor a comunicação nas dailies.',
+    status: 'Pending', 
+    createdAt: new Date('2023-11-21').toISOString(),
+    // @ts-ignore
+    type: FeedbackType.Guidance,
+    // @ts-ignore
+    category: FeedbackCategory.SoftSkill
+  }
 ];
 
-// --- A Simulação da API ---
+const delay = (ms = 500) => new Promise(resolve => setTimeout(resolve, ms));
 
-// Este é o "truque" para simular o tempo de espera da rede (latência)
-// Assim você pode testar seus spinners de loading!
-const simularLatencia = (ms: number = 1000) => {
-  return new Promise(resolve => setTimeout(resolve, ms));
+// --- FUNÇÕES DO SERVICE ---
+
+export const getTeamMembers = async (): Promise<TeamMemberResult[]> => {
+  await delay();
+  return MOCK_USERS;
 };
 
-// --- Nossas Funções Mock (idênticas às reais) ---
+export const createFeedback = async (data: CreateFeedbackRequest): Promise<void> => {
+  console.log("[MOCK] Criando feedback:", data);
+  await delay(1000);
 
-export const getFeedbacksRecebidos = async (userId: number): Promise<Feedback[]> => {
-  console.warn(`%c[MOCK ATIVO] getFeedbacksRecebidos(${userId})`, 'color: #FFA500;');
   
-  await simularLatencia(); // Espera 1 segundo
-  
-  // A lógica do 'userId' aqui é só para mostrar, 
-  // já que estamos retornando dados "chumbados"
-  return FAKE_DB_RECEBIDOS;
+  const recipient = MOCK_USERS.find(u => u.id === data.recipientId);
+
+
+  const newFeedback: FeedbackResult = {
+    id: Math.random().toString(36).substr(2, 9),
+    authorId: CURRENT_USER_ID,
+    authorName: data.isAnonymous ? undefined : 'Você',
+    recipientId: data.recipientId,
+    recipientName: recipient ? recipient.name : 'Desconhecido',
+    content: data.content,
+    status: 'Pending', 
+    createdAt: new Date().toISOString(),
+    // @ts-ignore
+    type: data.type as unknown as any, 
+    category: data.category as unknown as any
+  };
+
+  FAKE_FEEDBACKS.unshift(newFeedback); 
 };
 
-export const getFeedbacksEnviados = async (userId: number): Promise<Feedback[]> => {
-  console.warn(`%c[MOCK ATIVO] getFeedbacksEnviados(${userId})`, 'color: #FFA500;');
+export const getSentFeedbacks = async (page = 1, pageSize = 10): Promise<PaginatedResult<FeedbackResult>> => {
+  await delay();
+
+  const sent = FAKE_FEEDBACKS.filter(f => f.authorId === CURRENT_USER_ID);
+
+  return {
+    items: sent,
+    pageIndex: page,
+    totalPages: 1,
+    totalCount: sent.length,
+    hasPreviousPage: false,
+    hasNextPage: false
+  };
+};
+
+
+export const getFeedbacksRecebidos = async (userId: string): Promise<FeedbackResult[]> => {
+  await delay();
+
   
-  await simularLatencia(500); // Meio segundo
-  
-  return FAKE_DB_ENVIADOS;
+  const received = FAKE_FEEDBACKS.filter(f => 
+    f.recipientId === userId && f.status !== 'Pending'
+  );
+
+  return received;
+};
+
+export const getFeedbacksEnviados = async (userId: string): Promise<FeedbackResult[]> => {
+    const result = await getSentFeedbacks();
+    return result.items;
+};
+
+export const getFeedbackFormData = async (): Promise<FeedbackFormDataResult> => {
+  await delay();
+  return {
+    // Retornamos os mesmos usuários mockados, mas dentro da estrutura nova
+    recipients: MOCK_USERS 
+  };
 };

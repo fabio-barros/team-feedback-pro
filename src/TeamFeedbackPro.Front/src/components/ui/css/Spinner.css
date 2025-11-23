@@ -10,11 +10,10 @@
   height: 40px;
   border-radius: 50%;
   
-  /* Usa a cor primária! */
   border: 4px solid var(--cor-borda); 
   border-top-color: var(--cor-primaria);
   
-  /* A animação */
+ 
   animation: spin 1s linear infinite;
 }
 

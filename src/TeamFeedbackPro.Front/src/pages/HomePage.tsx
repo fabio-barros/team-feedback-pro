@@ -5,20 +5,23 @@ import { FeedbackCreateModal } from '../components/features/feedback/FeedbackCre
 import { FeedbackList } from '../components/features/feedback/FeedbackList';
 import { Spinner } from '../components/ui/Spinner'; 
 
-import { getFeedbacksRecebidos } from '../services/feedbackService.mock';
-import { getFeedbacksEnviados } from '../services/feedbackService.mock';
-import type { Feedback } from '../types';
+import { getSentFeedbacks } from '../services/feedbackService';
+import type { PaginatedResult, FeedbackResult } from '../types';
 import { CadastroComponent } from '../components/features/cadastro/CadastroComponent';
 
 import './css/HomePage.css';
 
 type ViewState = 'home' | 'recebidos' | 'enviados' | 'novo-usuario';
+type HomePageProps = {
+  onLogout: () => void; 
+};
 
-
-export const HomePage = () => {
+export const HomePage = ({ onLogout }: HomePageProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [view, setView] = useState<ViewState>('home');
-  const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
+
+  const [feedbacks, setFeedbacks] = useState<FeedbackResult[]>([]);
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
@@ -33,19 +36,19 @@ export const HomePage = () => {
       setError(null);
       
       try {
-        const userId = 3;
-        let dados: Feedback[] = [];
+
+        
+        let dados:PaginatedResult<FeedbackResult>;
         
         if (view === 'recebidos') {
-          dados = await getFeedbacksRecebidos(userId);
-          
-          dados = dados.filter(fb => fb.status !== 'pendente');
-          
-        } else if (view === 'enviados') {
-          dados = await getFeedbacksEnviados(userId);
+          // dados = await getFeedbacksRecebidos(USUARIO_ATUAL_ID);
+           setFeedbacks([]);
+        } else {
+           dados = await getSentFeedbacks();
+           setFeedbacks(dados.items);
         }
         
-        setFeedbacks(dados);
+        
       } catch (err) {
         setError(err as Error);
       } finally {
@@ -98,6 +101,7 @@ export const HomePage = () => {
       <Nav 
         currentView={view} 
         onViewChange={(newView) => setView(newView as ViewState)} 
+        onLogout={onLogout}
       />
       
       <main className="painel-content">
@@ -107,7 +111,12 @@ export const HomePage = () => {
       <FeedbackCreateModal 
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onFeedbackEnviado={() => setIsModalOpen(false)}
+        onFeedbackEnviado={() => {
+          setIsModalOpen(false);
+        const current = view;
+            setView('home');
+            setTimeout(() => setView(current), 10);
+        }}
       />
     </div>
   );

@@ -4,15 +4,16 @@ import './css/Nav.css';
 type navProps = {
   currentView: string; 
   onViewChange: (view: string) => void;
+  onLogout: () => void;
 };
 
-export const Nav = ({ currentView, onViewChange }: navProps) => {
+export const Nav = ({ currentView, onViewChange, onLogout }: navProps) => {
   
-  // Helper para checar se o botão está ativo
   const isActive = (view: string) => view === currentView;
 
   return (
     <nav className="nav">
+      <div className="nav-content">
       <ul className="nav-list">
         
         <li className="nav-item">
@@ -48,6 +49,12 @@ export const Nav = ({ currentView, onViewChange }: navProps) => {
           </button>
         </li>
       </ul>
+      <div className="nav-footer">
+          <button className="nav-button logout-btn" onClick={onLogout}>
+            🚪 Sair
+          </button>
+        </div>
+        </div>
     </nav>
   );
 };

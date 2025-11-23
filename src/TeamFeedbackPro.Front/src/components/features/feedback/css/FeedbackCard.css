@@ -1,11 +1,10 @@
 
 .card {
-  background-color: var(--cor-fundo);
-  border: 2px solid #a0aefd;
-  border-radius: 8px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 4px rgba(226, 225, 228, 0.05);
+  background: #ffffff;
+  border-radius: 12px;
+  border-left: 4px solid #667eea;
+  padding: 20px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
 }
 
 .card-header {
@@ -24,22 +23,45 @@
   margin: 0;
 }
 
-.card-cargo {
-  font-size: 0.9rem;
-  color: var(--cor-texto-secundario);
+.card-date {
+  font-size: 0.8rem;
+  color: #a0aec0;
+  display: block;
+  margin-top: 0.2rem;
+}
+
+/* --- Tags (Tipo e Categoria) --- */
+.card-tags {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tag {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.tag-type {
+  background-color: #ebf8ff;
+  color: #3182ce; /* Azul */
+  border: 1px solid #bee3f8;
+}
+
+.tag-category {
+  background-color: #f0fff4;
+  color: #38a169; /* Verde */
+  border: 1px solid #c6f6d5;
 }
 
 .card-mensagem {
   color: var(--cor-texto);
   font-style: italic;
   line-height: 1.5;
-}
-
-.card-footer {
-  text-align: right;
-  font-size: 0.8rem;
-  color: var(--cor-texto-secundario);
-  margin-top: 1rem;
 }
 
 /* --- Status Badge --- */

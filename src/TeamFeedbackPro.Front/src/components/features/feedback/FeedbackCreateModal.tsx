@@ -1,74 +1,136 @@
+import { useEffect, useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+
 import './css/FeedbackCreateModal.css';
 
 import { Modal } from '../../ui/Modal';
+import { createFeedback, getFeedbackFormData } from '../../../services/feedbackService';
+import { FeedbackCategory, type TeamMemberResult, FeedbackType, type CreateFeedbackRequest } from '../../../types';
 
 
 const feedbackSchema = z.object({
-  targetId: z.string().min(1, 'Você precisa selecionar uma pessoa.'),
-  mensagem: z.string().min(10, 'O feedback precisa ter pelo menos 10 caracteres.'),
+  recipientId: z.string().min(1, 'Selecione um destinatário'),
+  content: z.string().min(20, 'Mínimo de 20 caracteres').max(2000, 'Máximo de 2000'),
+  type: z.coerce.number(),
+  category: z.coerce.number(),
+  isAnonymous: z.boolean()
 });
 
-
 type FeedbackFormInputs = z.infer<typeof feedbackSchema>;
-
 
 type FeedbackCreateModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  onFeedbackEnviado: () => void; 
+  onFeedbackEnviado?: () => void;
 };
 
-export const FeedbackCreateModal = ({ isOpen, onClose }: FeedbackCreateModalProps) => {
-  
-  const { 
-    register, 
-    handleSubmit, 
+export const FeedbackCreateModal = ({ isOpen, onClose, onFeedbackEnviado }: FeedbackCreateModalProps) => {
+
+  const [members, setMembers] = useState<TeamMemberResult[]>([]);
+
+  const {
+    register,
+    handleSubmit,
     formState: { errors, isSubmitting },
-    reset 
-  } = useForm<FeedbackFormInputs>({
-    resolver: zodResolver(feedbackSchema)
+    reset
+  } = useForm({
+    resolver: zodResolver(feedbackSchema),
+    defaultValues: {
+      recipientId: '',
+      content: '',
+      type: FeedbackType.Feedback, 
+      category: FeedbackCategory.Technical,
+      isAnonymous: false,
+    }
   });
 
-  
+  useEffect(() => {
+    if (isOpen) {
+      getFeedbackFormData()
+        .then((data:any) =>{
+          const listaUsuarios = data.recipients || data.teamMembers || data.users || [];
+          if (Array.isArray(listaUsuarios)) {
+            setMembers(listaUsuarios);
+          } else {
+            console.warn("Não foi possível encontrar a lista de usuários no retorno da API.", data);
+          }
+        } )
+        .catch(error => console.error('Erro ao carregar time:', error));
+    }
+  }, [isOpen]);
+
   const onSubmit: SubmitHandler<FeedbackFormInputs> = async (data) => {
     try {
-      
-      reset();    
-      onClose();  
+      const payload: CreateFeedbackRequest = {
+        ...data,
+        type: data.type as unknown as FeedbackType,
+        category: data.category as unknown as FeedbackCategory,
+      };
+
+      await createFeedback(payload);
+
+      reset();
+      onClose();
+      if (onFeedbackEnviado) onFeedbackEnviado();
     } catch (error) {
-      console.error('Erro ao enviar feedback', error);
+      console.error('Erro ao enviar feedback', error)
+      alert('Erro ao enviar feedback. Tente novamente.');
     }
   };
 
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Enviar Novo Feedback">
+    <Modal isOpen={isOpen} onClose={onClose} title="Novo Feedback">
       <form onSubmit={handleSubmit(onSubmit)}>
-        
-        
+
+
         <div className="form-group">
-          <label htmlFor="targetId">Para:</label>
-          <select id="targetId" {...register('targetId')}>
+          <label>Para:</label>
+          <select  {...register('recipientId')}>
             <option value="">Selecione...</option>
-            {/* Buscar da API */}
-            <option value="1">Aline Limeira</option>
-            <option value="2">Fábio Ribeiro</option>
+            {members.map(m => (
+              <option key={m.id} value={m.id}>{m.name} ({m.role})</option>
+            ))}
           </select>
-          {errors.targetId && <span className="erro">{errors.targetId.message}</span>}
+          {errors.recipientId && <span className="erro">{errors.recipientId.message}</span>}
+        </div>
+
+        <div style={{ display: 'flex', gap: '1rem' }}>
+          <div className="form-group">
+            <label>Tipo:</label>
+            <select {...register('type')}>
+              <option value={FeedbackType.Feedback}>Feedback</option>
+              <option value={FeedbackType.Praise}>Elogio</option>
+              <option value={FeedbackType.Guidance}>Orientação</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label>Categoria:</label>
+            <select {...register('category')}>
+              <option value={FeedbackCategory.Technical}>Técnico</option>
+              <option value={FeedbackCategory.SoftSkill}>Comportamental</option>
+              <option value={FeedbackCategory.Management}>Gestão</option>
+            </select>
+          </div>
         </div>
 
         {/* Campo: Mensagem */}
         <div className="form-group">
-          <label htmlFor="mensagem">Mensagem:</label>
-          <textarea 
-            id="mensagem" 
-            {...register('mensagem')} 
+          <label>Mensagem:</label>
+          <textarea
+            {...register('content')}
             rows={5}
           />
-          {errors.mensagem && <span className="erro">{errors.mensagem.message}</span>}
+          {errors.content && <span className="erro">{errors.content.message}</span>}
+        </div>
+
+        {/* 4. Anônimo */}
+        <div className="form-group checkbox">
+          <label>
+            <input type="checkbox" {...register('isAnonymous')} /> Enviar anonimamente?
+          </label>
         </div>
 
         <div className="form-actions">

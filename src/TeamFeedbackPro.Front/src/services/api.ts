@@ -2,8 +2,18 @@ import axios from 'axios';
 
 const api = axios.create({
   
-  baseURL: // 'http://localhost:3000/api' url da api
-  'https://team-feedback-pro-backend.onrender.com/api'
+  baseURL:  'http://localhost:5266/api' // Porta API .NET
+  
+});
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('access_token'); 
+  
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  
+  return config;
 });
 
 
