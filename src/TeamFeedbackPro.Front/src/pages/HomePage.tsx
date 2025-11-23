@@ -9,9 +9,11 @@ import { getFeedbacksRecebidos } from '../services/feedbackService.mock';
 import { getFeedbacksEnviados } from '../services/feedbackService.mock';
 import type { Feedback } from '../types';
 
+import { CadastroComponent } from '../components/features/feedback/CadastroComponent';
+
 import './css/HomePage.css';
 
-type ViewState = 'home' | 'recebidos' | 'enviados';
+type ViewState = 'home' | 'recebidos' | 'enviados' | 'novo-usuario';
 
 
 export const HomePage = () => {
@@ -78,14 +80,16 @@ export const HomePage = () => {
 
     return (
       <div className="content-list-wrapper">
-        <h2>{view === 'recebidos' ? 'Feedbacks Recebidos' : 'Feedbacks Enviados'}</h2>
+        <h2>{view === 'recebidos' ? 'Feedbacks Recebidos' : view === 'enviados' ? 'Feedbacks Enviados' : 'Cadastro de Novo Usuário'}</h2>
         
-        <div className="scrollable-list-area">
-          <FeedbackList 
+        {view === 'novo-usuario' ? (
+          <CadastroComponent></CadastroComponent>
+        ) : (
+          <FeedbackList
             feedbacks={feedbacks}
             perspectiva={view === 'enviados' ? 'target' : 'author'}
           />
-        </div>
+      )}
       </div>
     );
   };

@@ -39,6 +39,14 @@ export const Nav = ({ currentView, onViewChange }: navProps) => {
             Feedbacks Enviados
           </button>
         </li>
+        <li className="nav-item">
+          <button 
+            className={`nav-button ${isActive('novo-usuario') ? 'active' : ''}`}
+            onClick={() => onViewChange('novo-usuario')}
+          >
+            Novo Usuário
+          </button>
+        </li>
       </ul>
     </nav>
   );
