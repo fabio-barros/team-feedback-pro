@@ -21,7 +21,7 @@ public static class DatabaseSeeder
 
         logger.LogInformation("Starting database migration and seeding...");
 
-        await context.Database.MigrateAsync();
+        // await context.Database.MigrateAsync();
 
         if (await context.Teams.AnyAsync().ConfigureAwait(false))
         {
@@ -171,7 +171,7 @@ public static class DatabaseSeeder
                 memberEng2.Id,
                 FeedbackType.Positive,
                 FeedbackCategory.CodeQuality,
-                "Great work on the recent code review! Your attention to detail helped us catch several potential bugs before they reached production. Keep up the excellent work.",
+                "Ótimo trabalho na revisão de código recente! Sua atenção aos detalhes nos ajudou a identificar vários possíveis bugs antes que chegassem à produção. Continue com o excelente trabalho.",
                 false
             ),
 
@@ -180,7 +180,7 @@ public static class DatabaseSeeder
                 memberEng1.Id,
                 FeedbackType.Constructive,
                 FeedbackCategory.Communication,
-                "I appreciate your contributions in our sprint meetings. However, I think we could benefit from more detailed updates on your tasks. It would help the team understand dependencies better.",
+                "Agradeço suas contribuições nas nossas reuniões de sprint. No entanto, acho que poderíamos nos beneficiar de atualizações mais detalhadas sobre suas tarefas. Isso ajudaria a equipe a entender melhor as dependências.",
                 false
             ),
 
@@ -189,7 +189,7 @@ public static class DatabaseSeeder
                 memberEng3.Id,
                 FeedbackType.Positive,
                 FeedbackCategory.ProblemSolving,
-                "Outstanding job solving that performance issue in the database queries. Your analytical approach and persistence really made a difference. The application is now 40% faster!",
+                "Excelente trabalho ao resolver aquele problema de desempenho nas consultas do banco de dados. Sua abordagem analítica e persistência realmente fizeram a diferença. O aplicativo agora está 40% mais rápido!",
                 false
             ),
 
@@ -198,7 +198,7 @@ public static class DatabaseSeeder
                 managerEng.Id,
                 FeedbackType.Positive,
                 FeedbackCategory.Leadership,
-                "Thank you for your excellent leadership during the last sprint. Your clear communication and support helped the team deliver on time despite the challenges we faced.",
+                "Obrigado pela excelente liderança durante o último sprint. Sua comunicação clara e apoio ajudaram a equipe a entregar no prazo, apesar dos desafios que enfrentamos.",
                 false
             ),
 
@@ -207,7 +207,7 @@ public static class DatabaseSeeder
                 memberEng3.Id,
                 FeedbackType.Constructive,
                 FeedbackCategory.Teamwork,
-                "You're a great developer, but I've noticed you sometimes work in isolation. Collaborating more with the team during implementation could lead to better solutions and knowledge sharing.",
+                "Você é um ótimo desenvolvedor, mas percebi que às vezes trabalha de forma isolada. Colaborar mais com a equipe durante a implementação pode levar a melhores soluções e compartilhamento de conhecimento.",
                 false
             ),
 
@@ -217,7 +217,7 @@ public static class DatabaseSeeder
                 memberMkt2.Id,
                 FeedbackType.Positive,
                 FeedbackCategory.Communication,
-                "Your presentation to stakeholders was excellent! You communicated complex metrics in a way that everyone could understand. This really helped get buy-in for our new campaign.",
+                "Sua apresentação para os stakeholders foi excelente! Você comunicou métricas complexas de um jeito que todos puderam entender. Isso realmente ajudou a conquistar apoio para nossa nova campanha.",
                 false
             ),
 
@@ -226,7 +226,7 @@ public static class DatabaseSeeder
                 managerMkt.Id,
                 FeedbackType.Positive,
                 FeedbackCategory.Leadership,
-                "I really appreciate how you've been mentoring me on campaign strategy. Your guidance has significantly improved my approach to content planning and execution.",
+                "Agradeço muito como você vem me mentorando em estratégia de campanha. Sua orientação melhorou significativamente minha abordagem ao planejamento e execução de conteúdo.",
                 false
             ),
 
@@ -235,7 +235,7 @@ public static class DatabaseSeeder
                 memberMkt1.Id,
                 FeedbackType.Constructive,
                 FeedbackCategory.Other,
-                "Your creative ideas are fantastic, but I've noticed some deadlines have been missed recently. Let's work together to improve time management and prioritization of tasks.",
+                "Suas ideias criativas são fantásticas, mas notei que alguns prazos têm sido perdidos recentemente. Vamos trabalhar juntos para melhorar a gestão do tempo e a priorização de tarefas.",
                 false
             ),
 
@@ -245,7 +245,7 @@ public static class DatabaseSeeder
                 memberPD2.Id,
                 FeedbackType.Positive,
                 FeedbackCategory.CodeQuality,
-                "The UI components you designed are not only beautiful but also highly reusable. The design system you're building will save the team countless hours. Excellent work!",
+                "Os componentes de UI que você projetou não são apenas lindos, mas também altamente reutilizáveis. O sistema de design que você está construindo vai economizar inúmeras horas da equipe. Excelente trabalho!",
                 false
             ),
 
@@ -254,7 +254,7 @@ public static class DatabaseSeeder
                 memberPD1.Id,
                 FeedbackType.Positive,
                 FeedbackCategory.ProblemSolving,
-                "I'm impressed by how you approached the accessibility issues in our app. Your research and implementation of ARIA labels and keyboard navigation shows real dedication to inclusive design.",
+                "Estou impressionado com a forma como você abordou os problemas de acessibilidade em nosso app. Sua pesquisa e implementação de labels ARIA e navegação por teclado demonstram verdadeira dedicação ao design inclusivo.",
                 false
             ),
 
@@ -264,7 +264,7 @@ public static class DatabaseSeeder
                 memberDS2.Id,
                 FeedbackType.Positive,
                 FeedbackCategory.Teamwork,
-                "Your collaboration on the ML model was exceptional. You were always willing to explain complex concepts and help debug issues. This really accelerated our project timeline.",
+                "Sua colaboração no modelo de ML foi excepcional. Você sempre esteve disposto a explicar conceitos complexos e ajudar a depurar problemas. Isso realmente acelerou o cronograma do projeto.",
                 false
             ),
 
@@ -273,7 +273,7 @@ public static class DatabaseSeeder
                 managerDS.Id,
                 FeedbackType.Constructive,
                 FeedbackCategory.Communication,
-                "While your technical expertise is outstanding, I think our stakeholder presentations could be improved by simplifying the technical jargon. Not everyone has a data science background.",
+                "Embora sua expertise técnica seja excelente, acho que nossas apresentações para stakeholders poderiam ser melhoradas simplificando o jargão técnico. Nem todos têm formação em ciência de dados.",
                 false
             ),
 
@@ -282,7 +282,7 @@ public static class DatabaseSeeder
                 memberDS1.Id,
                 FeedbackType.Positive,
                 FeedbackCategory.ProblemSolving,
-                "Your innovative approach to feature engineering significantly improved our model's accuracy. Your ability to think outside the box and experiment with new techniques is a real asset to the team.",
+                "Sua abordagem inovadora de feature engineering melhorou significativamente a precisão do nosso modelo. Sua capacidade de pensar fora da caixa e experimentar novas técnicas é um grande diferencial para a equipe.",
                 false
             ),
 
@@ -292,7 +292,7 @@ public static class DatabaseSeeder
                 managerEng.Id,
                 FeedbackType.Critical,
                 FeedbackCategory.Leadership,
-                "I feel that some decisions are made without sufficient team input. More transparency in the decision-making process would help build trust and ensure we're all aligned on priorities.",
+                "Sinto que algumas decisões são tomadas sem contribuição suficiente da equipe. Maior transparência no processo de tomada de decisão ajudaria a construir confiança e garantir que todos estejamos alinhados nas prioridades.",
                 true 
             ),
 
@@ -301,7 +301,7 @@ public static class DatabaseSeeder
                 memberMkt1.Id,
                 FeedbackType.Constructive,
                 FeedbackCategory.Teamwork,
-                "Sometimes during team discussions, you tend to dominate the conversation. Giving others more space to contribute their ideas would improve our collaborative environment.",
+                "Às vezes, durante as discussões da equipe, você tende a dominar a conversa. Dar mais espaço para que os outros contribuam com suas ideias melhoraria nosso ambiente de colaboração.",
                 true 
             )
         };

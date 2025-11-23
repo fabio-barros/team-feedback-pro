@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using TeamFeedbackPro.Application.Common.Abstractions;
 using TeamFeedBackPro.Infrastructure.Authentication;
@@ -85,6 +86,8 @@ public static class DependencyInjection
             options.AddPolicy("ManagerOrAdmin", policy =>
                 policy.RequireRole("Manager", "Admin"));
         });
+
+        JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
         return services;
     }
