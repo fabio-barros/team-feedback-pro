@@ -1,0 +1,18 @@
+.feedback-list {
+  margin-top: 1.5rem;
+}
+
+.feedback-list-empty {
+  margin-top: 1.5rem;
+  padding: 2rem;
+  text-align: center;
+  background-color: #f9f9f9; 
+  border: 1px dashed var(--cor-borda);
+  border-radius: 8px;
+}
+
+.feedback-list-empty p {
+  font-size: 1rem;
+  color: var(--cor-texto-secundario);
+  margin: 0;
+}

@@ -1,0 +1,25 @@
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;           /* espaço entre label e input */
+  margin-bottom: 14px; /* espaço entre linhas */
+}
+
+.form-row label {
+  width: 130px;        /* 🔥 label menor */
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9rem;   /* letra um pouco menor */
+  margin: 0;
+  white-space: nowrap;
+}
+
+.form-row input,
+.form-row select {
+  flex: 1;
+  max-width: 300px;    /* 🔥 campo mais curto */
+  padding: 8px 10px;
+  height: 34px;        /* 🔥 altura reduzida */
+  font-size: 0.9rem;   /* letra um pouco menor */
+  box-sizing: border-box;
+}

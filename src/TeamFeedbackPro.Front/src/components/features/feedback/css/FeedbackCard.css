@@ -1,0 +1,90 @@
+
+.card {
+  background: #ffffff;
+  border-radius: 12px;
+  border-left: 4px solid #667eea;
+  padding: 20px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid var(--cor-borda);
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.card-titulo {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--cor-texto);
+  margin: 0;
+}
+
+.card-date {
+  font-size: 0.8rem;
+  color: #a0aec0;
+  display: block;
+  margin-top: 0.2rem;
+}
+
+/* --- Tags (Tipo e Categoria) --- */
+.card-tags {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tag {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.tag-type {
+  background-color: #ebf8ff;
+  color: #3182ce; /* Azul */
+  border: 1px solid #bee3f8;
+}
+
+.tag-category {
+  background-color: #f0fff4;
+  color: #38a169; /* Verde */
+  border: 1px solid #c6f6d5;
+}
+
+.card-mensagem {
+  color: var(--cor-texto);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* --- Status Badge --- */
+.status-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.status--aprovado {
+  background-color: #affdc8; 
+  
+  color: var(--cor-texto);
+}
+
+.status--rejeitado {
+  background-color: #f7aeae; 
+  color: var(--cor-erro);
+}
+
+.status--pendente {
+  background-color: #f7deb0; 
+  color: var(--cor-aviso);
+}

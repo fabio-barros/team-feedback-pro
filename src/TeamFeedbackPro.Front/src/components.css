@@ -1,0 +1,148 @@
+/* ==========================================================
+   COMPONENTES DO SISTEMA
+   Botões • Cards • Inputs • Status Tags
+========================================================== */
+
+/* --- Botão Primário ---*/
+.btn-primary {
+  background: #667eea;
+  color: #ffffff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-family: var(--font-interface);
+  font-size: 16px;
+  font-weight: var(--semibold);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  background: #5567d4;
+}
+
+/* --- Botão Secundário ---*/
+.btn-secondary {
+  background: transparent;
+  color: #667eea;
+  padding: 12px 24px;
+  border: 2px solid #667eea;
+  border-radius: 8px;
+  font-family: var(--font-interface);
+  font-size: 16px;
+  font-weight: var(--semibold);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background: #667eea0f;
+}
+
+/* --- Cards --- */
+.card {
+  background: #ffffff;
+  border-radius: 12px;
+  border-left: 4px solid #667eea;
+  padding: 20px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+/* --- Inputs --- */
+.input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-family: var(--font-interface);
+  font-size: 16px;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.input:focus {
+  border-color: #667eea;
+}
+
+/* --- Status Tags--- */
+.tag {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-family: var(--font-interface);
+  font-weight: var(--medium);
+  color: #ffffff;
+}
+
+/* Cores por status */
+.tag-success {
+  background: var(--cor-sucesso);
+}
+
+.tag-error {
+  background: var(--cor-erro);
+}
+
+.tag-warning {
+  background: var(--cor-aviso);
+}
+
+.tag-info {
+  background: #667eea;
+}
+
+
+/* ==========================================================
+   ÍCONES DO SISTEMA (SVG embutidos via background-image)
+   Tamanho padrão: 20px
+========================================================== */
+
+.icon {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  background-size: contain;
+  background-repeat: no-repeat;
+  vertical-align: middle;
+}
+
+/* --- Ícone: Dar Feedback (📝)--- */
+.icon-feedback {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjNjY3ZWVhIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTQgMmgxNmMxLjEgMCAyIC45IDIgMnYxMmMwIDEuMS0uOSAyLTJIMTJsLTYgNi02LTZINEMyLjkgMjAgMiAxOS4xIDIgMThWNEMyLjkgMiAyLjkgMiAxNnptMCAySDJWN2gxNlY0ek0xOCA5SDZ2MmgxMnptMCA0SDZ2MmgxMnptLTggNEg2djJoNCIvPjwvc3ZnPg==");
+}
+
+/* --- Ícone: Recebidos (📥)--- */
+.icon-recebidos {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjNjY3ZWVhIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTIgNGMxLjEgMCAyIC45IDIgMnYxMmMwIDEuMS0uOSAyLTIgMmgtMlY0eiBNMjAgNGMxLjEgMCAyIC45IDIgMnYxMmMwIDEuMS0uOSAyLTIgMmgtdjJoLTJWMnptLTggNmwtNCA0IDQtNHptMCA4bC00LTQgNCA0eiIvPjwvc3ZnPg==");
+}
+
+/* --- Ícone: Enviados (📤)--- */
+.icon-enviados {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjNjY3ZWVhIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTQgMTF2NWMwIDEuMS45IDIgMiAySDl2MmwtNCA0LTQgNGwtNC00IDQtNGgtMnMtMi0uOS0yLTJ2LTVoMnptNCAwaDEydi0yaC0xMnYyem0tNC00SDJWNGgxNlY3eiIvPjwvc3ZnPg==");
+}
+
+/* --- Ícone: Aprovado (✓) --- */
+.icon-aprovado {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjNDhiYjc4IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTEwIDE1bC02LTYgMi0yIDQgNCA4LThsMiAyLTEwIDEwIi8+PC9zdmc+");
+}
+
+/* --- Ícone: Pendente (⏳) --- */
+.icon-pendente {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjZWQ4OTM2IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTEyIDJDNy4wMyAyIDMgNi4wMyAzIDEybDggNmw4LTZjMC01Ljk3LTQuMDMtMTAtMTAtMTB6bTAgMmM0LjQxIDAgOCAzLjU5IDggOGwtOCA2LTgtNmMwLTQuNDEgMy41OS04IDgtOHoiLz48L3N2Zz4=");
+}
+
+/* --- Ícone: Rejeitado (✗) --- */
+.icon-rejeitado {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjZjU2NTY1IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTcgN2w0IDQgNC00IDIgMi00IDQtNCA0LTIgMi00LTRsLTQgNCIvPjwvc3ZnPg==");
+}
+
+/* --- Ícone: Usuário (👤)--- */
+.icon-usuario {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjNjY3ZWVhIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTEyIDJjMi43NiAwIDUgMi4yNCA1IDVzLTIuMjQgNS01IDUtNS0yLjI0LTUtNSAyLjI0LTUgNS01em0wIDhjMy4zMSAwIDkgMS42NiA5IDR2Mkgzdi0yYzAtMi4zNCA1LjY5LTQgOS00eiIvPjwvc3ZnPg==");
+}
+
+/* --- Ícone: Anônimo (🔒) --- */
+.icon-anonimo {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjNjY3ZWVhIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTEyIDJDNy43OSA3Ljc5IDQgNi4xNCA0IDEyVjloMTZ2M2MwLTMuODYtMy4xNC03LTctN3ptMC0yYzQuNDEgMCA4IDMuNTkgOCA4djRoLTJ2LTRjMC0zLjMxLTIuNjktNi02LTZzLTYgMi42OS02IDZ2NGgtMlY4YzAtNC40MSAzLjU5LTggOC04eiIvPjwvc3ZnPg==");
+}

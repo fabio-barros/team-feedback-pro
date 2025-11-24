@@ -1,0 +1,191 @@
+/* ------------------------------
+   IMPORTAÇÃO DAS FONTES (Google Fonts)
+------------------------------ */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Garante que bordas não aumentem o tamanho dos elementos */
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden; /* Impede que o corpo do site tenha scroll */
+}
+
+:root {
+
+  /* --- Fontes padrão do sistema --- */
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+
+ /* --- Cores temas/variáveis --- */
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  --cor-fundo: #FFFFFF;
+  --cor-texto: #1A202C; 
+  --cor-texto-secundario: #A0AEC0; 
+  
+  /* --- Cores da Marca (Semânticas) --- */
+  /* As cores que você usa para botões, links, etc. */
+  --cor-primaria: #4299E1; /* Um tom de azul */
+  --cor-primaria-hover: #2B6CB0; /* Azul mais escuro para hover */
+  --cor-cinza: #718096; /* Cinza médio */
+  
+  --cor-secundaria: #ECC94B; /* Um tom de amarelo */
+
+  /* --- Cores de Feedback (Estado) --- */
+  --cor-sucesso: #48BB78; /* Verde */
+  --cor-erro: #F56565; /* Vermelho */
+  --cor-aviso: #ED8936; /* Laranja */
+  
+  /* --- Outros --- */
+  --cor-borda: #E2E8F0; /* Cinza bem claro para bordas */
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+
+/* ------------------------------
+     HIERARQUIA TIPOGRÁFICA
+  ------------------------------ */
+
+/* --- Poppins para Títulos ---*/
+  --font-display: "Poppins", sans-serif;
+
+  /* Inter para Corpo */
+  --font-interface: "Inter", sans-serif;
+
+  /*--- Tamanhos ---*/
+  --h1-size: 48px;
+  --h2-size: 36px;
+  --h3-size: 24px;
+  --body-size: 16px;
+  --small-size: 14px;
+
+  /*--- Pesos ---*/
+  --extra-bold: 800;
+  --bold: 700;
+  --semibold: 600;
+  --medium: 500;
+  --regular: 400;
+  --light: 300;
+}
+
+/* ------------------------------
+   ELEMENTOS BASE
+------------------------------ */
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  display: flex;
+  place-items: center;
+  font-family: var(--font-interface);
+  font-size: var(--body-size);
+  color: var(--cor-texto);
+}
+
+
+/* ------------------------------
+   TÍTULOS COM POPPINS
+------------------------------ */
+h1 {
+  font-family: var(--font-display);
+  font-weight: var(--bold);
+  font-size: var(--h1-size);
+  line-height: 1.1;
+}
+
+h2 {
+  font-family: var(--font-display);
+  font-weight: var(--semibold);
+  font-size: var(--h2-size);
+}
+
+h3 {
+  font-family: var(--font-interface);
+  font-weight: var(--semibold);
+  font-size: var(--h3-size);
+}
+
+
+/* ------------------------------
+   TEXTO PADRÃO / INTER
+------------------------------ */
+
+p {
+  font-family: var(--font-interface);
+  font-weight: var(--regular);
+  font-size: var(--body-size);
+  line-height: 1.6;
+}
+
+.small {
+  font-size: var(--small-size);
+  font-weight: var(--regular);
+  color: var(--cor-texto-secundario);
+}
+
+
+/* ------------------------------
+   BOTÕES (Inter SemiBold)
+------------------------------ */
+
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 16px;
+  font-weight: var(--semibold);
+  font-family: var(--font-interface);
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+/*-- Foco padrão --*/
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+
+/* ------------------------------
+   LIGHT MODE
+------------------------------ */
+
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
