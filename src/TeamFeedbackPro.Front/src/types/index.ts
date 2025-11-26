@@ -53,17 +53,19 @@ export interface UpdateTeamRequest {
 // --- FEEDBACK ---
 
 export  const FeedbackType = {
-  Feedback: 0,
-  Praise: 1,     
-  Guidance: 2    
+  Feedback: 'Feedback',
+  Praise: 'Praise',     
+  Guidance: 'Guidance',
+  Constructive: 'Constructive', 
 } as const
 
 export type FeedbackType = typeof FeedbackType[keyof typeof FeedbackType];
 
 export  const  FeedbackCategory ={
-  Technical: 0,
-  SoftSkill: 1,
-  Management: 2
+  Technical: 'Technical',
+  SoftSkill: 'SoftSkill',
+  Management: 'Management',
+  CodeQuality: 'CodeQuality',
 } as const
 
 export type FeedbackCategory = typeof FeedbackCategory[keyof typeof FeedbackCategory];
@@ -73,7 +75,7 @@ export type FeedbackStatus = 'Pending' | 'Approved' | 'Rejected';
 
 export type UserInfo = {
   id: string;
-  nome: string;
+  name: string;
   cargo: string;
 };
 
@@ -86,8 +88,8 @@ export interface TeamMemberResult {
 
 export interface CreateFeedbackRequest {
   recipientId: string;
-  type: FeedbackType;
-  category: FeedbackCategory;
+  type: FeedbackType | string;
+  category: FeedbackCategory | string;
   content: string;
   isAnonymous: boolean;
 }
@@ -97,10 +99,13 @@ export interface FeedbackResult {
   authorId: string;
   authorName?: string; 
   recipientId: string;
-  recipientName: string;
+  recipientName?: string;
   content: string;
   status: FeedbackStatus;
-  createdAt: string; 
+  createdAt: string;
+  isAnonymous: boolean;
+  type: FeedbackType | string;       
+  category: FeedbackCategory | string;
 }
 
 export interface PaginatedResult<T> {
@@ -112,6 +117,13 @@ export interface PaginatedResult<T> {
   hasNextPage: boolean;
 }
 
+export interface LookupItem {
+  key: number; 
+  value: string; 
+}
+
 export interface FeedbackFormDataResult {
-  recipients: TeamMemberResult[];
+  users: TeamMemberResult[];
+  types: LookupItem[];
+  categories: LookupItem[];
 }

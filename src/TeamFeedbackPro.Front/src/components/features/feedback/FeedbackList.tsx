@@ -18,7 +18,7 @@ export const FeedbackList = ({ feedbacks, perspectiva }: FeedbackListProps) => {
     );
   }
 
-  // --- A Lista ---
+  
   return (
     <section className="feedback-list">
       {feedbacks.map((fb) => (
