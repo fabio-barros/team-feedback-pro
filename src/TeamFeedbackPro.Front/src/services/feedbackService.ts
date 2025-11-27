@@ -6,8 +6,8 @@ import type { CreateFeedbackRequest
 , FeedbackFormDataResult
  } from '../types/'; 
 
-export const getFeedbackFormData = async (): Promise<FeedbackFormDataResult[]> => {
-  const response = await api.get<FeedbackFormDataResult[]>('/feedbacks/feedback-form-data');
+export const getFeedbackFormData = async (): Promise<FeedbackFormDataResult> => {
+  const response = await api.get<FeedbackFormDataResult>('/feedbacks/feedback-form-data');
   return response.data;
 };
 

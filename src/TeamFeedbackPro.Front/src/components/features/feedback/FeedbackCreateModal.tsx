@@ -7,7 +7,7 @@ import './css/FeedbackCreateModal.css';
 
 import { Modal } from '../../ui/Modal';
 import { createFeedback, getFeedbackFormData } from '../../../services/feedbackService';
-import { FeedbackCategory, type TeamMemberResult, FeedbackType, type CreateFeedbackRequest } from '../../../types';
+import { FeedbackCategory, type TeamMemberResult, FeedbackType, type CreateFeedbackRequest, type FeedbackFormDataResult } from '../../../types';
 
 
 const feedbackSchema = z.object({
@@ -28,7 +28,11 @@ type FeedbackCreateModalProps = {
 
 export const FeedbackCreateModal = ({ isOpen, onClose, onFeedbackEnviado }: FeedbackCreateModalProps) => {
 
-  const [members, setMembers] = useState<TeamMemberResult[]>([]);
+  const [formData, setFormData] = useState<FeedbackFormDataResult>({
+    users: [],
+    types: [],
+    categories: []
+  });
 
   const {
     register,
@@ -40,8 +44,8 @@ export const FeedbackCreateModal = ({ isOpen, onClose, onFeedbackEnviado }: Feed
     defaultValues: {
       recipientId: '',
       content: '',
-      type: FeedbackType.Feedback, 
-      category: FeedbackCategory.Technical,
+      type: 0,
+      category: 0,
       isAnonymous: false,
     }
   });
@@ -49,24 +53,22 @@ export const FeedbackCreateModal = ({ isOpen, onClose, onFeedbackEnviado }: Feed
   useEffect(() => {
     if (isOpen) {
       getFeedbackFormData()
-        .then((data:any) =>{
-          const listaUsuarios = data.recipients || data.teamMembers || data.users || [];
-          if (Array.isArray(listaUsuarios)) {
-            setMembers(listaUsuarios);
-          } else {
-            console.warn("Não foi possível encontrar a lista de usuários no retorno da API.", data);
-          }
-        } )
-        .catch(error => console.error('Erro ao carregar time:', error));
+        .then(data => {
+          console.log("Dados do formulário carregados:", data);
+          setFormData(data);
+        })
+        .catch(error => console.error('Erro ao carregar dados do formulário:', error));
     }
   }, [isOpen]);
+
+  console.log("DADOS RECEBIDOS DO BACKEND:", getFeedbackFormData());
 
   const onSubmit: SubmitHandler<FeedbackFormInputs> = async (data) => {
     try {
       const payload: CreateFeedbackRequest = {
         ...data,
-        type: data.type as unknown as FeedbackType,
-        category: data.category as unknown as FeedbackCategory,
+        type: data.type as any,
+        category: data.category as any,
       };
 
       await createFeedback(payload);
@@ -90,8 +92,10 @@ export const FeedbackCreateModal = ({ isOpen, onClose, onFeedbackEnviado }: Feed
           <label>Para:</label>
           <select  {...register('recipientId')}>
             <option value="">Selecione...</option>
-            {members.map(m => (
-              <option key={m.id} value={m.id}>{m.name} ({m.role})</option>
+            {formData.users.map(user => (
+              <option key={user.id} value={user.id}>
+                {user.name} ({user.role})
+              </option>
             ))}
           </select>
           {errors.recipientId && <span className="erro">{errors.recipientId.message}</span>}
@@ -101,17 +105,21 @@ export const FeedbackCreateModal = ({ isOpen, onClose, onFeedbackEnviado }: Feed
           <div className="form-group">
             <label>Tipo:</label>
             <select {...register('type')}>
-              <option value={FeedbackType.Feedback}>Feedback</option>
-              <option value={FeedbackType.Praise}>Elogio</option>
-              <option value={FeedbackType.Guidance}>Orientação</option>
+              {formData.types.map(t => (
+                <option key={t.key} value={t.key}>
+                  {t.value} 
+                </option>
+              ))}
             </select>
           </div>
           <div className="form-group">
             <label>Categoria:</label>
             <select {...register('category')}>
-              <option value={FeedbackCategory.Technical}>Técnico</option>
-              <option value={FeedbackCategory.SoftSkill}>Comportamental</option>
-              <option value={FeedbackCategory.Management}>Gestão</option>
+              {formData.categories.map(c => (
+                <option key={c.key} value={c.key}>
+                  {c.value} 
+                </option>
+              ))}
             </select>
           </div>
         </div>
