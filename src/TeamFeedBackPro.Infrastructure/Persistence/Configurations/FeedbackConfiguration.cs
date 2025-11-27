@@ -76,6 +76,10 @@ public class FeedbackConfiguration : IEntityTypeConfiguration<Feedback>
             .IsRequired()
             .HasColumnName("updated_at");
 
+        builder.Property(f => f.TeamId)
+            .IsRequired()
+            .HasColumnName("team_id");
+
         // Relationships
         builder.HasOne(f => f.Author)
             .WithMany()
@@ -90,6 +94,11 @@ public class FeedbackConfiguration : IEntityTypeConfiguration<Feedback>
         builder.HasOne(f => f.Reviewer)
             .WithMany()
             .HasForeignKey(f => f.ReviewedBy)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasOne(f => f.Team)
+            .WithMany()
+            .HasForeignKey(f => f.TeamId)
             .OnDelete(DeleteBehavior.SetNull);
 
         // Indexes
