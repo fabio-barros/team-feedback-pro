@@ -27,6 +27,13 @@ export const getSentFeedbacks = async (page = 1, pageSize = 10): Promise<Paginat
   return response.data;
 };
 
+export const getReceivedFeedbacks = async (page = 1, pageSize = 10): Promise<PaginatedResult<FeedbackResult>> => {
+  const response = await api.get<PaginatedResult<FeedbackResult>>('/feedbacks/received', {
+    params: { page, pageSize }
+  });
+  return response.data;
+};
+
 // export const getFeedbacksRecebidos = async (userId: number): Promise<Feedback[]> => {
 //   try {
     

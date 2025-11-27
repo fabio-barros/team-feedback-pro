@@ -71,7 +71,7 @@ export  const  FeedbackCategory ={
 export type FeedbackCategory = typeof FeedbackCategory[keyof typeof FeedbackCategory];
 
 
-export type FeedbackStatus = 'Pending' | 'Approved' | 'Rejected';
+export type FeedbackStatus = 'Em análise' | 'Aprovado' | 'Rejeitado';
 
 export type UserInfo = {
   id: string;

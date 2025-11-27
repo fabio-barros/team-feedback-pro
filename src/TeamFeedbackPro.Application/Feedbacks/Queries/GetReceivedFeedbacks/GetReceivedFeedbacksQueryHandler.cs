@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using TeamFeedbackPro.Application.Common.Abstractions;
 using TeamFeedbackPro.Application.Common.Models;
 using TeamFeedbackPro.Application.Feedbacks.Queries.GetReceivedFeedbacks;
+using TeamFeedbackPro.Domain.Enums;
 
 namespace TeamFeedbackPro.Application.Feedbacks.Queries.GetSentFeedbacks;
 
@@ -26,11 +27,11 @@ public class GetReceivedFeedbacksQueryHandler(
             f.Id,
             f.AuthorId,
             f.RecipientId,
-            f.Type.ToString(),
-            f.Category.ToString(),
+            f.Type.ToDescription(),
+            f.Category.ToDescription(),
             f.Content,
             f.IsAnonymous,
-            f.Status.ToString(),
+            f.Status.ToDescription(),
             f.CreatedAt
         ));
 

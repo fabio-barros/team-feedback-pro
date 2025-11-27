@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FeedbackType, FeedbackCategory, type FeedbackResult, type FeedbackStatus } from '../../../types';
+import { type FeedbackResult, type FeedbackStatus } from '../../../types';
 import './css/FeedbackCard.css';
 import { getUserById } from '../../../services/userService';
 
@@ -8,33 +8,10 @@ type FeedbackCardProps = {
   perspectiva: 'target' | 'author';
 };
 
-const getStatusLabel = (status: FeedbackStatus) => {
-  switch (status) {
-    case 'Approved': return 'Aprovado';
-    case 'Rejected': return 'Rejeitado';
-    case 'Pending': return 'Pendente';
-    default: return status;
-  }
-};
-
 const getStatusClass = (status: FeedbackStatus) => {
-  if (status === 'Approved') return 'status--aprovado';
-  if (status === 'Rejected') return 'status--rejeitado';
+  if (status === 'Aprovado') return 'status--aprovado';
+  if (status === 'Rejeitado') return 'status--rejeitado';
   return 'status--pendente';
-};
-
-const TypeLabels: Record<string, string> = {
-  'Feedback': 'Feedback',
-  'Praise': 'Elogio',
-  'Constructive': 'Construtivo',
-  'Guidance': 'Orientação'
-};
-
-const CategoryLabels: Record<string, string> = {
-  'Technical': 'Técnico',
-  'CodeQuality': 'Qualidade de Código',
-  'SoftSkill': 'Comportamental',
-  'Management': 'Gestão'
 };
 
 export const FeedbackCard = ({ feedback, perspectiva }: FeedbackCardProps) => {
@@ -54,7 +31,7 @@ export const FeedbackCard = ({ feedback, perspectiva }: FeedbackCardProps) => {
           idParaBuscar = feedback.recipientId;
         }
 
-        if (perspectiva === 'target' && ehAnonimo) {
+        if (perspectiva === 'author' && ehAnonimo) {
           setNomeExibicao('Anônimo');
           return;
         }
@@ -77,16 +54,8 @@ export const FeedbackCard = ({ feedback, perspectiva }: FeedbackCardProps) => {
     carregarNome();
   }, [feedback, perspectiva]);
 
-  
-
   const titulo = perspectiva === 'author' ? `De: ${nomeExibicao}` : `Para: ${nomeExibicao}`;
   const dataFormatada = new Date(feedback.createdAt).toLocaleDateString('pt-BR');
-  const rawType = String(feedback.type); 
-  const rawCategory = String(feedback.category);
-  const tipoTexto = TypeLabels[rawType] || rawType;
-  const categoriaTexto = CategoryLabels[rawCategory] || rawCategory;
-
-
 
   return (
     <article className="card">
@@ -98,13 +67,13 @@ export const FeedbackCard = ({ feedback, perspectiva }: FeedbackCardProps) => {
 
         {/* O Status Badge */}
         <span className={`status-badge ${getStatusClass(feedback.status)}`}>
-          {getStatusLabel(feedback.status)}
+          {feedback.status}
         </span>
       </header>
 
       <div className="card-tags">
-        <span className="tag tag-type">{tipoTexto}</span>
-        <span className="tag tag-category">{categoriaTexto}</span>
+        <span className="tag tag-type">{feedback.type}</span>
+        <span className="tag tag-category">{feedback.category}</span>
       </div>
       <p className="card-mensagem">
         "{feedback.content}"
