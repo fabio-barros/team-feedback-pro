@@ -8,6 +8,7 @@ using TeamFeedbackPro.Application.Common.Models;
 using TeamFeedbackPro.Application.Common.Models.FeedbackForm;
 using TeamFeedbackPro.Application.Feedbacks.Commands.CreateFeedback;
 using TeamFeedbackPro.Application.Feedbacks.Queries.GetFeedbackFormData;
+using TeamFeedbackPro.Application.Feedbacks.Queries.GetReceivedFeedbacks;
 using TeamFeedbackPro.Application.Feedbacks.Queries.GetSentFeedbacks;
 using TeamFeedbackPro.Application.Users.Queries.GetTeamMembers;
 using TeamFeedbackPro.Domain.Enums;
@@ -50,6 +51,13 @@ public static class FeedbackEndpoints
             .WithName("GetSentFeedbacks")
             .WithSummary("Get sent feedbacks")
             .WithDescription("Retrieves feedbacks sent by the authenticated user with optional filtering and pagination.")
+            .Produces<PaginatedResult<FeedbackResult>>(200, contentType: "application/json")
+            .WithOpenApi();
+ 
+        feedbackGroup.MapGet("/received", GetReceivedFeedbacks)
+            .WithName("GetReceivedFeedbacks")
+            .WithSummary("Get receveid feedbacks")
+            .WithDescription("Retrieves feedbacks received, approved by manager, by the authenticated user with optional filtering and pagination.")
             .Produces<PaginatedResult<FeedbackResult>>(200, contentType: "application/json")
             .WithOpenApi();
 
@@ -127,6 +135,31 @@ public static class FeedbackEndpoints
         if (pageSize < 1 || pageSize > 100) pageSize = 10;
 
         var query = new GetSentFeedbacksQuery(authorId, status, page, pageSize);
+        var result = await mediator.Send(query, cancellationToken);
+
+        return result.IsFailure
+            ? Results.BadRequest(new { message = result.Error })
+            : Results.Ok(result.Value);
+    }
+
+    private static async Task<IResult> GetReceivedFeedbacks(
+        ClaimsPrincipal user,
+        ISender mediator,
+        [FromQuery] FeedbackStatus? status,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10,
+        CancellationToken cancellationToken = default)
+    {
+        var userIdClaim = user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+        if (!Guid.TryParse(userIdClaim, out var userId))
+        {
+            return Results.Unauthorized();
+        }
+
+        if (page < 1) page = 1;
+        if (pageSize < 1 || pageSize > 100) pageSize = 10;
+
+        var query = new GetReceivedFeedbacksQuery(userId, status, page, pageSize);
         var result = await mediator.Send(query, cancellationToken);
 
         return result.IsFailure

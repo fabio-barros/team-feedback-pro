@@ -5,7 +5,7 @@ import { FeedbackCreateModal } from '../components/features/feedback/FeedbackCre
 import { FeedbackList } from '../components/features/feedback/FeedbackList';
 import { Spinner } from '../components/ui/Spinner'; 
 
-import { getSentFeedbacks } from '../services/feedbackService';
+import { getReceivedFeedbacks, getSentFeedbacks } from '../services/feedbackService';
 import type { PaginatedResult, FeedbackResult } from '../types';
 import { CadastroComponent } from '../components/features/cadastro/CadastroComponent';
 
@@ -41,8 +41,8 @@ export const HomePage = ({ onLogout }: HomePageProps) => {
         let dados:PaginatedResult<FeedbackResult>;
         
         if (view === 'recebidos') {
-          // dados = await getFeedbacksRecebidos(USUARIO_ATUAL_ID);
-           setFeedbacks([]);
+           dados = await getReceivedFeedbacks();
+           setFeedbacks(dados.items);
         } else {
            dados = await getSentFeedbacks();
            setFeedbacks(dados.items);

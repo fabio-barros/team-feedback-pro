@@ -14,10 +14,12 @@ public class Feedback : BaseEntity
     public Guid? ReviewedBy { get; private set; }
     public DateTime? ReviewedAt { get; private set; }
     public string? ReviewNotes { get; private set; }
+    public Guid TeamId { get; private set; }
 
     public virtual User? Author { get; private set; }
     public virtual User? Recipient { get; private set; }
     public virtual User? Reviewer { get; private set; }
+    public virtual Team? Team { get; private set; }
 
     private Feedback() { } // EF Core
 
@@ -27,7 +29,8 @@ public class Feedback : BaseEntity
         FeedbackType type,
         FeedbackCategory category,
         string content,
-        bool isAnonymous)
+        bool isAnonymous,
+        Guid teamId)
     {
         if (authorId == recipientId)
             throw new ArgumentException("Cannot send feedback to yourself");
@@ -50,6 +53,7 @@ public class Feedback : BaseEntity
         Content = content.Trim();
         IsAnonymous = isAnonymous;
         Status = FeedbackStatus.Pending;
+        TeamId = teamId;
     }
 
     public void Approve(Guid reviewerId, string? notes = null)

@@ -60,7 +60,8 @@ public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackComman
             request.Type,
             request.Category,
             request.Content,
-            request.IsAnonymous
+            request.IsAnonymous,
+            author.TeamId.Value
         );
 
         await _feedbackRepository.AddAsync(feedback, cancellationToken);
