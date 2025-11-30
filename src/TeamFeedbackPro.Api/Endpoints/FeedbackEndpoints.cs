@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using TeamFeedbackPro.Api.Contracts;
 using TeamFeedbackPro.Application.Common.Models;
 using TeamFeedbackPro.Application.Common.Models.FeedbackForm;
+using TeamFeedbackPro.Application.Feedbacks.Commands.ApproveFeedback;
 using TeamFeedbackPro.Application.Feedbacks.Commands.CreateFeedback;
+using TeamFeedbackPro.Application.Feedbacks.Commands.RejectFeedback;
 using TeamFeedbackPro.Application.Feedbacks.Queries.GetFeedbackFormData;
 using TeamFeedbackPro.Application.Feedbacks.Queries.GetReceivedFeedbacks;
 using TeamFeedbackPro.Application.Feedbacks.Queries.GetSentFeedbacks;
@@ -80,21 +82,21 @@ public static class FeedbackEndpoints
             .ProducesProblem(401)
             .WithOpenApi();
 
-        // feedbackGroup.MapPatch("/approve", GetFeedbackFormData)
-        //     .WithName("GetFeedbackFormData")
-        //     .WithSummary("Get data for feedback form")
-        //     .WithDescription("Retrieves necessaries data for send a feedback")
-        //     .Produces<FeedbackFormDataResult>(200, contentType: "application/json")
-        //     .ProducesProblem(401)
-        //     .WithOpenApi();
+        feedbackGroup.MapPatch("/approve", ApproveFeedback)
+            .WithName("ApproveFeedback")
+            .WithSummary("Approve feedback")
+            .WithDescription("Approve feedback by manager on the pending feedbacks of them team")
+            .Produces<FeedbackFormDataResult>(200, contentType: "application/json")
+            .ProducesProblem(401)
+            .WithOpenApi();
 
-        // feedbackGroup.MapPatch("/reject", GetFeedbackFormData)
-        //     .WithName("GetFeedbackFormData")
-        //     .WithSummary("Get data for feedback form")
-        //     .WithDescription("Retrieves necessaries data for send a feedback")
-        //     .Produces(201, contentType: "application/json")
-        //     .ProducesProblem(401)
-        //     .WithOpenApi();
+        feedbackGroup.MapPatch("/reject", RejectFeedback)
+            .WithName("RejectFeedback")
+            .WithSummary("Reject feedback")
+            .WithDescription("Reject feedback by manager on the pending feedbacks of them team")
+            .Produces(201, contentType: "application/json")
+            .ProducesProblem(401)
+            .WithOpenApi();
 
         var usersGroup = app.MapGroup("/api/users")
             .WithTags("Users")
@@ -253,8 +255,72 @@ public static class FeedbackEndpoints
         {
             return Results.Unauthorized();
         }
+
         var query = new GetFeedbackFormDataQuery(userId);
         var result = await mediator.Send(query, cancellationToken);
+
+        return result.IsFailure
+            ? Results.BadRequest(new { message = result.Error })
+            : Results.Ok(result.Value);
+    }
+
+    private static async Task<IResult> ApproveFeedback(
+        ClaimsPrincipal user,
+        ISender mediator,
+        [FromQuery] Guid feedbackId,
+        ReviewFeedbackRequest? reviewFeedbackRequest,
+        IValidator<ApproveFeedbackCommand> validator,
+        CancellationToken cancellationToken
+    )
+    {
+        var userIdClaim = user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+        if (!Guid.TryParse(userIdClaim, out var userId))
+        {
+            return Results.Unauthorized();
+        }
+
+        if (feedbackId == Guid.Empty)
+        {
+            return Results.BadRequest("Não foi recebido um feedback para aprovar");
+        }
+
+        var command = new ApproveFeedbackCommand(feedbackId, userId, reviewFeedbackRequest?.Review);
+        var validationResult = await validator.ValidateAsync(command, cancellationToken);
+        if (!validationResult.IsValid)
+            return Results.ValidationProblem(validationResult.ToDictionary());
+        var result = await mediator.Send(command, cancellationToken);
+
+        return result.IsFailure
+            ? Results.BadRequest(new { message = result.Error })
+            : Results.Ok(result.Value);
+    }
+
+    private static async Task<IResult> RejectFeedback(
+        ClaimsPrincipal user,
+        ISender mediator,
+        [FromQuery] Guid feedbackId,
+        ReviewFeedbackRequest reviewFeedbackRequest,
+        IValidator<RejectFeedbackCommand> validator,
+        CancellationToken cancellationToken
+    )
+    {
+        var userIdClaim = user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+        if (!Guid.TryParse(userIdClaim, out var userId))
+        {
+            return Results.Unauthorized();
+        }
+
+        if (feedbackId == Guid.Empty)
+        {
+            return Results.BadRequest("Não foi recebido um feedback para aprovar");
+        }
+
+        var command = new RejectFeedbackCommand(feedbackId, userId, reviewFeedbackRequest.Review);
+        var validationResult = await validator.ValidateAsync(command, cancellationToken);
+        if (!validationResult.IsValid)
+            return Results.ValidationProblem(validationResult.ToDictionary());
+        
+        var result = await mediator.Send(command, cancellationToken);
 
         return result.IsFailure
             ? Results.BadRequest(new { message = result.Error })
