@@ -6,9 +6,9 @@ using TeamFeedbackPro.Application.Common.Models;
 using TeamFeedbackPro.Domain.Entities;
 using TeamFeedbackPro.Domain.Enums;
 
-namespace TeamFeedbackPro.Application.Feedbacks.Commands.ApproveFeedback;
+namespace TeamFeedbackPro.Application.Feedbacks.Commands.RejectFeedback;
 
-public class ApproveFeedbackCommandHandler : IRequestHandler<ApproveFeedbackCommand, Result<bool>>
+public class ApproveFeedbackCommandHandler : IRequestHandler<RejectFeedbackCommand, Result<bool>>
 {
     private readonly IFeedbackRepository _feedbackRepository;
     private readonly IUserRepository _userRepository;
@@ -27,9 +27,9 @@ public class ApproveFeedbackCommandHandler : IRequestHandler<ApproveFeedbackComm
         _logger = logger;
     }
 
-    public async Task<Result<bool>> Handle(ApproveFeedbackCommand request, CancellationToken cancellationToken)
+    public async Task<Result<bool>> Handle(RejectFeedbackCommand request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Approving feedback {FeedbackId}", request.FeedbackId);
+        _logger.LogInformation("Rejecting feedback {FeedbackId}", request.FeedbackId);
 
         // Validating feedback exists
         var feedback = await _feedbackRepository.GetByIdAsync(request.FeedbackId);
@@ -76,12 +76,12 @@ public class ApproveFeedbackCommandHandler : IRequestHandler<ApproveFeedbackComm
             return Result.Failure<bool>("Author and recipient must be in the same team");
         }
 
-        feedback.Approve(manager.Id, request.Review);
+        feedback.Reject(manager.Id, request.Review);
 
         await _feedbackRepository.UpdateAsync(feedback, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("Feedback approved successfully {FeedbackId}", feedback.Id);
+        _logger.LogInformation("Feedback rejected successfully {FeedbackId}", feedback.Id);
 
         return Result.Success(true);
     }

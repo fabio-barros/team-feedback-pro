@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using TeamFeedbackPro.Application.Common.Models;
 
-namespace TeamFeedbackPro.Application.Feedbacks.Commands.ApproveFeedback;
+namespace TeamFeedbackPro.Application.Feedbacks.Commands.RejectFeedback;
 
-public record ApproveFeedbackCommand(
+public record RejectFeedbackCommand(
     Guid FeedbackId,
     Guid ManagerId,
-    string? Review
+    string Review
 ) : IRequest<Result<bool>>;
