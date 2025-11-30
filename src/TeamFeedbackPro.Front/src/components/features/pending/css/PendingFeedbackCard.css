@@ -4,6 +4,11 @@
   border-left: 4px solid #667eea;
   padding: 20px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .card-header {
@@ -68,6 +73,10 @@
   color: var(--cor-texto);
   font-style: italic;
   line-height: 1.5;
+  white-space: pre-wrap; 
+  word-break: break-word; 
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
 /* STATUS BADGE */
@@ -99,6 +108,7 @@
   margin-top: 1rem;
   display: flex;
   gap: 12px;
+  width: 100%;
 }
 
 .btn-approve,
