@@ -91,6 +91,29 @@ public class FeedbackRepository : IFeedbackRepository
 
         return (items, totalCount);
     }
+    
+    public async Task<(IEnumerable<Feedback> Items, int TotalCount)> GetPendingByManagerAsync(
+        Guid teamId,
+        int page,
+        int pageSize,
+        CancellationToken cancellationToken = default)
+    {
+        var query = _context.Feedbacks
+            .Where(f => f.TeamId == teamId
+                && f.Status == FeedbackStatus.Pending);
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var items = await query
+            .Include(f => f.Author)
+            .Include(f => f.Recipient)
+            .OrderByDescending(f => f.CreatedAt)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        return (items, totalCount);
+    }
 
     public async Task<IEnumerable<Feedback>> GetPendingByRecipientAsync(
         Guid recipientId,
