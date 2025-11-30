@@ -33,14 +33,15 @@ public class LoginQueryHandler(
             return Result<AuthenticationResult>.Failure(ErrorMessages.InvalidCredentials);
         }
 
-        var token = jwtTokenGenerator.GenerateToken(user.Id, user.Email, user.Role);
+        var token = jwtTokenGenerator.GenerateToken(user.Id, user.Email, user.Role, user.TeamId ?? Guid.Empty);
 
         return Result.Success(new AuthenticationResult(
             token,
             user.Id,
             user.Email,
             user.Name,
-            user.Role.ToString()
+            user.Role.ToString(),
+            user.TeamId ?? Guid.Empty
         ));
     }
 }

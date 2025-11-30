@@ -21,4 +21,9 @@ public interface IFeedbackRepository
         int pageSize,
         CancellationToken cancellationToken = default);
     Task<IEnumerable<Feedback>> GetPendingByRecipientAsync(Guid recipientId, CancellationToken cancellationToken = default);
+    Task<(IEnumerable<Feedback> Items, int TotalCount)> GetPendingByManagerAsync(
+        Guid teamId,
+        int page,
+        int pageSize,
+        CancellationToken cancellationToken = default);
 }

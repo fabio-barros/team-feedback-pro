@@ -4,5 +4,6 @@ public record AuthenticationResult(
     Guid UserId,
     string Email,
     string Name,
-    string Role
+    string Role,
+    Guid TeamId
 );

@@ -85,6 +85,9 @@ public static class DependencyInjection
 
             options.AddPolicy("ManagerOrAdmin", policy =>
                 policy.RequireRole("Manager", "Admin"));
+
+            options.AddPolicy("ManagerOnly", policy =>
+                policy.RequireRole("Manager"));
         });
 
         JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
