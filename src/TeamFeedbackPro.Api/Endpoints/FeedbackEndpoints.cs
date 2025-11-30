@@ -80,13 +80,13 @@ public static class FeedbackEndpoints
             .ProducesProblem(401)
             .WithOpenApi();
 
-        // feedbackGroup.MapPatch("/approve", GetFeedbackFormData)
-        //     .WithName("GetFeedbackFormData")
-        //     .WithSummary("Get data for feedback form")
-        //     .WithDescription("Retrieves necessaries data for send a feedback")
-        //     .Produces<FeedbackFormDataResult>(200, contentType: "application/json")
-        //     .ProducesProblem(401)
-        //     .WithOpenApi();
+        feedbackGroup.MapPatch("/approve", ApproveFeedback)
+            .WithName("GetFeedbackFormData")
+            .WithSummary("Get data for feedback form")
+            .WithDescription("Retrieves necessaries data for send a feedback")
+            .Produces<FeedbackFormDataResult>(200, contentType: "application/json")
+            .ProducesProblem(401)
+            .WithOpenApi();
 
         // feedbackGroup.MapPatch("/reject", GetFeedbackFormData)
         //     .WithName("GetFeedbackFormData")
@@ -253,7 +253,34 @@ public static class FeedbackEndpoints
         {
             return Results.Unauthorized();
         }
+
         var query = new GetFeedbackFormDataQuery(userId);
+        var result = await mediator.Send(query, cancellationToken);
+
+        return result.IsFailure
+            ? Results.BadRequest(new { message = result.Error })
+            : Results.Ok(result.Value);
+    }
+
+    private static async Task<IResult> ApproveFeedback(
+        ClaimsPrincipal user,
+        ISender mediator,
+        [FromQuery] Guid feedbackId,
+        CancellationToken cancellationToken
+    )
+    {
+        var userIdClaim = user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+        if (!Guid.TryParse(userIdClaim, out var userId))
+        {
+            return Results.Unauthorized();
+        }
+
+        if (feedbackId == Guid.Empty)
+        {
+            return Results.BadRequest("Não foi recebido um feedback para aprovar");
+        }
+
+        var query = new ApproveFeedbackCommand(feedbackId, userId);
         var result = await mediator.Send(query, cancellationToken);
 
         return result.IsFailure
