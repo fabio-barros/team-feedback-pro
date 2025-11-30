@@ -40,6 +40,14 @@ export const Nav = ({ currentView, onViewChange, onLogout }: navProps) => {
             Feedbacks Enviados
           </button>
         </li>
+         <li className="nav-item">
+            <button 
+              className={`nav-button ${isActive('pendentes') ? 'active' : ''}`}
+              onClick={() => onViewChange('pendentes')}
+            >
+              Feedbacks Pendentes
+            </button>
+          </li>
         <li className="nav-item">
           <button 
             className={`nav-button ${isActive('novo-usuario') ? 'active' : ''}`}

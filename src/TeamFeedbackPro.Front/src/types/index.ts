@@ -109,6 +109,7 @@ export interface FeedbackResult {
 }
 
 export interface PaginatedResult<T> {
+  data(data: any): unknown;
   items: T[];
   pageIndex: number;
   totalPages: number;

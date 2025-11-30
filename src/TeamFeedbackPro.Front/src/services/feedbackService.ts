@@ -34,6 +34,25 @@ export const getReceivedFeedbacks = async (page = 1, pageSize = 10): Promise<Pag
   return response.data;
 };
 
+export const getPendingFeedbacks = async (page = 1, pageSize = 10): Promise<PaginatedResult<FeedbackResult>> => {
+  const response = await api.get<PaginatedResult<FeedbackResult>>('/feedbacks/review-peding', {
+    params: { page, pageSize }
+  });
+  return response.data;
+};
+
+export const approveFeedback = async (feedbackId: string, review?: string): Promise<void> => {
+  await api.patch('/feedbacks/approve', review ? { review } : {}, {
+    params: { feedbackId } 
+  });
+};
+
+export const rejectFeedback = async (feedbackId: string, review: string): Promise<void> => {
+  await api.patch('/feedbacks/reject', { review }, { 
+    params: { feedbackId } 
+  });
+};
+
 // export const getFeedbacksRecebidos = async (userId: number): Promise<Feedback[]> => {
 //   try {
     
