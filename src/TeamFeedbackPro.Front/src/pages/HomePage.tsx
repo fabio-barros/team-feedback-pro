@@ -4,14 +4,21 @@ import { Button } from '../components/ui/Button';
 import { FeedbackCreateModal } from '../components/features/feedback/FeedbackCreateModal';
 import { FeedbackList } from '../components/features/feedback/FeedbackList';
 import { Spinner } from '../components/ui/Spinner'; 
+import { 
+  getReceivedFeedbacks, 
+  getSentFeedbacks
+} from '../services/feedbackService';
 
-import { getReceivedFeedbacks, getSentFeedbacks } from '../services/feedbackService';
-import type { PaginatedResult, FeedbackResult } from '../types';
+import type { PaginatedResult, FeedbackResult} from '../types';
 import { CadastroComponent } from '../components/features/cadastro/CadastroComponent';
+
+import { FeedbackPendingPage } from '../components/features/pending/PendingFeedbackPage';
+
+
 
 import './css/HomePage.css';
 
-type ViewState = 'home' | 'recebidos' | 'enviados' | 'novo-usuario';
+type ViewState = 'home' | 'recebidos' | 'enviados' | 'novo-usuario'| 'pendentes';
 type HomePageProps = {
   onLogout: () => void; 
 };
@@ -25,10 +32,11 @@ export const HomePage = ({ onLogout }: HomePageProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
+
   useEffect(() => {
-    if (view === 'home') {
-      setFeedbacks([]); 
-      return; 
+      if (view === 'home' || view === 'pendentes' || view === 'novo-usuario') {
+    setFeedbacks([]);
+    return;
     }
 
     const carregarFeedbacks = async () => {
@@ -37,13 +45,12 @@ export const HomePage = ({ onLogout }: HomePageProps) => {
       
       try {
 
-        
-        let dados:PaginatedResult<FeedbackResult>;
-        
         if (view === 'recebidos') {
+          let dados:PaginatedResult<FeedbackResult>;
            dados = await getReceivedFeedbacks();
            setFeedbacks(dados.items);
         } else {
+          let dados:PaginatedResult<FeedbackResult>;
            dados = await getSentFeedbacks();
            setFeedbacks(dados.items);
         }
@@ -59,6 +66,7 @@ export const HomePage = ({ onLogout }: HomePageProps) => {
     carregarFeedbacks();
   }, [view]); 
 
+  
   const renderView = () => {
     if (view === 'home') {
       return (
@@ -82,16 +90,22 @@ export const HomePage = ({ onLogout }: HomePageProps) => {
 
     return (
       <div className="content-list-wrapper">
-        <h2>{view === 'recebidos' ? 'Feedbacks Recebidos' : view === 'enviados' ? 'Feedbacks Enviados' : 'Cadastro de Novo Usuário'}</h2>
+        <h2>{view === 'recebidos' && 'Feedbacks Recebidos'}
+            {view === 'enviados' && 'Feedbacks Enviados'}
+            {view === 'pendentes' && 'Feedbacks Pendentes'}
+            {view === 'novo-usuario' && 'Cadastro de Usuário'}</h2>
         
-        {view === 'novo-usuario' ? (
-          <CadastroComponent></CadastroComponent>
-        ) : (
+
+        {view === 'novo-usuario' && <CadastroComponent />}
+
+        {view === 'pendentes' && <FeedbackPendingPage/>} 
+
+        {(view === 'recebidos' || view === 'enviados') && (
           <FeedbackList
             feedbacks={feedbacks}
             perspectiva={view === 'enviados' ? 'target' : 'author'}
           />
-      )}
+        )}
       </div>
     );
   };
@@ -118,6 +132,7 @@ export const HomePage = ({ onLogout }: HomePageProps) => {
             setTimeout(() => setView(current), 10);
         }}
       />
+      
     </div>
   );
 };
