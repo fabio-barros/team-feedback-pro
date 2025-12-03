@@ -9,5 +9,6 @@ public record FeedbackResult(
     string Content,
     bool IsAnonymous,
     string Status,
+    string Feeling,
     DateTime CreatedAt
 );

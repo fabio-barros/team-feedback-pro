@@ -43,4 +43,10 @@ public record CreateFeedbackRequest
     /// </summary>
     /// <example>false</example>
     public bool IsAnonymous { get; init; }
+
+    /// <summary>
+    /// Feeling id
+    /// </summary>
+    /// <example>false</example>
+    public Guid? FeelingId { get; init; }
 }

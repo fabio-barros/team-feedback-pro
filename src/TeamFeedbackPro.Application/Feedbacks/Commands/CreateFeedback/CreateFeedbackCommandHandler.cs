@@ -11,17 +11,20 @@ public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackComman
 {
     private readonly IFeedbackRepository _feedbackRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IFeelingRepository _feelingRepository; 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CreateFeedbackCommandHandler> _logger;
 
     public CreateFeedbackCommandHandler(
         IFeedbackRepository feedbackRepository,
         IUserRepository userRepository,
+        IFeelingRepository feelingRepository,
         IUnitOfWork unitOfWork,
         ILogger<CreateFeedbackCommandHandler> logger)
     {
         _feedbackRepository = feedbackRepository;
         _userRepository = userRepository;
+        _feelingRepository = feelingRepository;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -54,6 +57,19 @@ public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackComman
             return Result.Failure<FeedbackResult>("Author and recipient must be in the same team");
         }
 
+        // Validate if selected feeling, if selected, exists
+        Feeling? feeling = null;
+        if (request.FeelingId.HasValue)
+        {
+            feeling = await _feelingRepository.GetByIdAsync(request.FeelingId.Value, cancellationToken);
+            if (feeling == null)
+            {
+                _logger.LogWarning("Feeling could not be found by Feeling id {FeelingId} ",
+                    request.FeelingId);
+                return Result.Failure<FeedbackResult>("Feeling could not be found by Feeling id ");
+            }
+        }
+
         var feedback = new Feedback(
             request.AuthorId,
             request.RecipientId,
@@ -61,7 +77,8 @@ public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackComman
             request.Category,
             request.Content,
             request.IsAnonymous,
-            author.TeamId.Value
+            author.TeamId.Value,
+            request.FeelingId
         );
 
         await _feedbackRepository.AddAsync(feedback, cancellationToken);
@@ -78,6 +95,7 @@ public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackComman
             feedback.Content,
             feedback.IsAnonymous,
             feedback.Status.ToString(),
+            feeling?.Name,
             feedback.CreatedAt
         ));
     }

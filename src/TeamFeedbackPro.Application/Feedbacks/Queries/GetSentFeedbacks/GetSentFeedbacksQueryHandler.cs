@@ -31,6 +31,7 @@ public class GetSentFeedbacksQueryHandler(
             f.Content,
             f.IsAnonymous,
             f.Status.ToDescription(),
+            f.Feeling?.Name,
             f.CreatedAt
         ));
 

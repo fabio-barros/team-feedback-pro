@@ -33,6 +33,7 @@ public class GetPendingFeedbacksQueryHandler(
             f.Content,
             f.IsAnonymous,
             f.Status.ToDescription(),
+            f.Feeling?.Name,
             f.CreatedAt
         ));
 

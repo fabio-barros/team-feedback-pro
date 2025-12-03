@@ -12,6 +12,7 @@ namespace TeamFeedbackPro.Application.Feedbacks.Queries.GetSentFeedbacks;
 
 public class GetFeedbackFormDataQueryHandler(
     ISender mediator,
+    IFeelingRepository feelingRepository,
     ILogger<GetFeedbackFormDataQueryHandler> logger)
     : IRequestHandler<GetFeedbackFormDataQuery, Result<FeedbackFormDataResult>>
 {
@@ -35,7 +36,10 @@ public class GetFeedbackFormDataQueryHandler(
             .Cast<FeedbackCategory>()
             .Select(p => new KeyValuePair<int, string>((int)p, p.ToDescription()))];
 
-        var formData = new FeedbackFormDataResult(feedbackTypes, feedbackCategories, teamMembers);
+        var feelings = (await feelingRepository.GetAllAsync()).ToList();
+        List<KeyValuePair<Guid, string>> feelingsKeyValue = [.. feelings.Select(f => new KeyValuePair<Guid,string>(f.Id, f.Name))];
+
+        var formData = new FeedbackFormDataResult(feedbackTypes, feedbackCategories, teamMembers, feelingsKeyValue);
         logger.LogInformation("Retrieved form data");
 
         return Result.Success(formData);

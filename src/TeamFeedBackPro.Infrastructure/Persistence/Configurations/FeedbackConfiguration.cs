@@ -80,6 +80,9 @@ public class FeedbackConfiguration : IEntityTypeConfiguration<Feedback>
             .IsRequired()
             .HasColumnName("team_id");
 
+        builder.Property(f => f.FeelingId)
+            .HasColumnName("feeling_id");
+
         // Relationships
         builder.HasOne(f => f.Author)
             .WithMany()

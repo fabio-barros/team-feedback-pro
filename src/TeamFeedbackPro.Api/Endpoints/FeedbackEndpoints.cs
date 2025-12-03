@@ -132,7 +132,8 @@ public static class FeedbackEndpoints
             request.Type,
             request.Category,
             request.Content,
-            request.IsAnonymous
+            request.IsAnonymous,
+            request.FeelingId
         );
 
         var validationResult = await validator.ValidateAsync(command, cancellationToken);
