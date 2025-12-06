@@ -11,5 +11,6 @@ public record FeedbackPendingResult(
     string Content,
     bool IsAnonymous,
     string Status,
+    string Feeling,
     DateTime CreatedAt
 );

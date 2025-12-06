@@ -10,5 +10,6 @@ public record CreateFeedbackCommand(
     FeedbackType Type,
     FeedbackCategory Category,
     string Content,
-    bool IsAnonymous
+    bool IsAnonymous, 
+    Guid? FeelingId
 ) : IRequest<Result<FeedbackResult>>;
