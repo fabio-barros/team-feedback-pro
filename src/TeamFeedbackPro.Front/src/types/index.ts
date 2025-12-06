@@ -106,6 +106,7 @@ export interface FeedbackResult {
   isAnonymous: boolean;
   type: FeedbackType | string;       
   category: FeedbackCategory | string;
+  ReviewNotes: string;
 }
 
 export interface PaginatedResult<T> {

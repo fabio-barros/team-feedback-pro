@@ -7,9 +7,13 @@ type ModalConfirmProps = {
   message: string;
   confirmLabel?: string;
   cancelLabel?: string;
+  textareaEnabled?: boolean;           // <--- NOVO
+  textareaValue?: string;             // <--- NOVO
+  onTextareaChange?: (v: string) => void;
   onConfirm: () => void;
   onCancel: () => void;
 };
+
 
 export const ModalConfirm = ({
   open,
@@ -17,6 +21,9 @@ export const ModalConfirm = ({
   message,
   confirmLabel = "Confirmar",
   cancelLabel = "Cancelar",
+  textareaEnabled = false,
+  textareaValue = "",   
+  onTextareaChange,
   onConfirm,
   onCancel
 }: ModalConfirmProps) => {
@@ -28,6 +35,15 @@ export const ModalConfirm = ({
       <div className="modal-box">
         <h3>{title}</h3>
         <p>{message}</p>
+        {textareaEnabled && (
+          <textarea
+            className="modal-textarea"
+            placeholder="Digite a justificativa da rejeição..."
+            value={textareaValue}
+            onChange={(e) => onTextareaChange?.(e.target.value)}
+            required
+          />
+        )}
 
         <div className="modal-actions">
           <button className="btn-cancel" onClick={onCancel}>{cancelLabel}</button>
