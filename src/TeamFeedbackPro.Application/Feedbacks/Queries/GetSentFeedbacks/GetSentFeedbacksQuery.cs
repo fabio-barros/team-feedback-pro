@@ -8,5 +8,5 @@ public record GetSentFeedbacksQuery(
     Guid AuthorId,
     FeedbackStatus? Status,
     int Page = 1,
-    int PageSize = 10
+    int PageSize = 11
 ) : IRequest<Result<PaginatedResult<FeedbackResult>>>;

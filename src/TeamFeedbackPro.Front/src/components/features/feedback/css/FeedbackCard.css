@@ -7,6 +7,16 @@
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
 }
 
+.card-rejection-notes {
+  background-color: #ffeaea;
+  padding: 0.5rem 1rem;
+  border-left: 4px solid #e53e3e;
+  margin-top: 0.5rem;
+  border-radius: 6px;
+  color: #721c24;
+  font-size: 0.9rem;
+}
+
 .card-header {
   display: flex;
   justify-content: space-between;
