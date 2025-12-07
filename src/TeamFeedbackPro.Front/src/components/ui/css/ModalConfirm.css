@@ -8,6 +8,17 @@
   z-index: 2000;
 }
 
+.modal-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid var(--cor-borda, #E2E8F0);
+  border-radius: 6px;
+  background-color: #FFFFFF;
+  color: var(--cor-texto, #1A202C);
+  box-sizing: border-box; 
+}
+
 .modal-box {
   background: white;
   padding: 2rem;

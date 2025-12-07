@@ -5,9 +5,10 @@ type navProps = {
   currentView: string; 
   onViewChange: (view: string) => void;
   onLogout: () => void;
+  role: number | null;
 };
 
-export const Nav = ({ currentView, onViewChange, onLogout }: navProps) => {
+export const Nav = ({ currentView, onViewChange, onLogout, role }: navProps) => {
   
   const isActive = (view: string) => view === currentView;
 
@@ -40,22 +41,26 @@ export const Nav = ({ currentView, onViewChange, onLogout }: navProps) => {
             Feedbacks Enviados
           </button>
         </li>
-         <li className="nav-item">
-            <button 
-              className={`nav-button ${isActive('pendentes') ? 'active' : ''}`}
-              onClick={() => onViewChange('pendentes')}
-            >
-              Feedbacks Pendentes
-            </button>
-          </li>
-        <li className="nav-item">
-          <button 
-            className={`nav-button ${isActive('novo-usuario') ? 'active' : ''}`}
-            onClick={() => onViewChange('novo-usuario')}
-          >
-            Novo Usuário
-          </button>
-        </li>
+         {role === 1 && (
+  <>
+    <li className="nav-item">
+      <button 
+        className={`nav-button ${isActive('pendentes') ? 'active' : ''}`}
+        onClick={() => onViewChange('pendentes')}
+      >
+        Feedbacks Pendentes
+      </button>
+    </li>
+    <li className="nav-item">
+      <button 
+        className={`nav-button ${isActive('novo-usuario') ? 'active' : ''}`}
+        onClick={() => onViewChange('novo-usuario')}
+      >
+        Novo Usuário
+      </button>
+    </li>
+  </>
+)}
       </ul>
       <div className="nav-footer">
           <button className="nav-button logout-btn" onClick={onLogout}>

@@ -3,19 +3,15 @@ import { Nav } from '../components/ui/Nav';
 import { Button } from '../components/ui/Button'; 
 import { FeedbackCreateModal } from '../components/features/feedback/FeedbackCreateModal';
 import { FeedbackList } from '../components/features/feedback/FeedbackList';
-import { Spinner } from '../components/ui/Spinner'; 
+import { Spinner } from '../components/ui/Spinner';
 import { 
   getReceivedFeedbacks, 
   getSentFeedbacks
 } from '../services/feedbackService';
-
-import type { PaginatedResult, FeedbackResult} from '../types';
+import type { PaginatedResult, FeedbackResult, UserProfile } from '../types';
 import { CadastroComponent } from '../components/features/cadastro/CadastroComponent';
-
 import { FeedbackPendingPage } from '../components/features/pending/PendingFeedbackPage';
-
-
-
+import { getMe } from '../services/authService';
 import './css/HomePage.css';
 
 type ViewState = 'home' | 'recebidos' | 'enviados' | 'novo-usuario'| 'pendentes';
@@ -28,34 +24,45 @@ export const HomePage = ({ onLogout }: HomePageProps) => {
   const [view, setView] = useState<ViewState>('home');
 
   const [feedbacks, setFeedbacks] = useState<FeedbackResult[]>([]);
-
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
+  const [role, setRole] = useState<number | null>(null); // ID da role
+  const [user, setUser] = useState<UserProfile | null>(null);
 
   useEffect(() => {
-      if (view === 'home' || view === 'pendentes' || view === 'novo-usuario') {
-    setFeedbacks([]);
-    return;
+    const fetchUser = async () => {
+      try {
+        const data = await getMe(); // pega do backend
+        setUser(data);
+
+        // data.role já é number? Se vier string, converta:
+        setRole(typeof data.role === 'string' ? Number(data.role) : data.role);
+      } catch (err) {
+        console.error("Erro ao buscar dados do usuário:", err);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  useEffect(() => {
+    if (view === 'home' || view === 'pendentes' || view === 'novo-usuario') {
+      setFeedbacks([]);
+      return;
     }
 
     const carregarFeedbacks = async () => {
       setIsLoading(true);
       setError(null);
-      
       try {
-
+        let dados: PaginatedResult<FeedbackResult>;
         if (view === 'recebidos') {
-          let dados:PaginatedResult<FeedbackResult>;
-           dados = await getReceivedFeedbacks();
-           setFeedbacks(dados.items);
+          dados = await getReceivedFeedbacks();
         } else {
-          let dados:PaginatedResult<FeedbackResult>;
-           dados = await getSentFeedbacks();
-           setFeedbacks(dados.items);
+          dados = await getSentFeedbacks();
         }
-        
-        
+        setFeedbacks(dados.items);
       } catch (err) {
         setError(err as Error);
       } finally {
@@ -64,14 +71,23 @@ export const HomePage = ({ onLogout }: HomePageProps) => {
     };
 
     carregarFeedbacks();
-  }, [view]); 
+  }, [view]);
 
-  
   const renderView = () => {
+    // ⚠️ Se role ainda não foi carregada, mostrar loading
+    if (role === null && (view === 'pendentes' || view === 'novo-usuario')) {
+      return <Spinner />;
+    }
+
+    // Permissão apenas para managers (role === 1)
+    if ((view === 'pendentes' || view === 'novo-usuario') && role !== 1) {
+      return <p>Você não tem permissão para acessar esta página.</p>;
+    }
+
     if (view === 'home') {
       return (
         <div className="content-welcome">
-          <h1>Boas vindas ao Feedback Team!</h1>
+          <h1>Boas vindas ao Feedback Team{user ? `, ${user.name}` : ''}!</h1>
           <p>Envie ou veja seus feedbacks.</p>
           <Button onClick={() => setIsModalOpen(true)}>
             + Criar Novo Feedback
@@ -80,26 +96,20 @@ export const HomePage = ({ onLogout }: HomePageProps) => {
       );
     }
 
-    if (isLoading) {
-      return <Spinner />;
-    }
-
-    if (error) {
-      return <p>Ocorreu um erro ao buscar os feedbacks.</p>;
-    }
+    if (isLoading) return <Spinner />;
+    if (error) return <p>Ocorreu um erro ao buscar os feedbacks.</p>;
 
     return (
       <div className="content-list-wrapper">
-        <h2>{view === 'recebidos' && 'Feedbacks Recebidos'}
-            {view === 'enviados' && 'Feedbacks Enviados'}
-            {view === 'pendentes' && 'Feedbacks Pendentes'}
-            {view === 'novo-usuario' && 'Cadastro de Usuário'}</h2>
-        
+        <h2>
+          {view === 'recebidos' && 'Feedbacks Recebidos'}
+          {view === 'enviados' && 'Feedbacks Enviados'}
+          {view === 'pendentes' && 'Feedbacks Pendentes'}
+          {view === 'novo-usuario' && 'Cadastro de Usuário'}
+        </h2>
 
-        {view === 'novo-usuario' && <CadastroComponent />}
-
-        {view === 'pendentes' && <FeedbackPendingPage/>} 
-
+        {view === 'novo-usuario' && role === 1 && <CadastroComponent />}
+        {view === 'pendentes' && role === 1 && <FeedbackPendingPage />}
         {(view === 'recebidos' || view === 'enviados') && (
           <FeedbackList
             feedbacks={feedbacks}
@@ -116,6 +126,7 @@ export const HomePage = ({ onLogout }: HomePageProps) => {
         currentView={view} 
         onViewChange={(newView) => setView(newView as ViewState)} 
         onLogout={onLogout}
+        role={role} // agora role é número
       />
       
       <main className="painel-content">
@@ -127,12 +138,11 @@ export const HomePage = ({ onLogout }: HomePageProps) => {
         onClose={() => setIsModalOpen(false)}
         onFeedbackEnviado={() => {
           setIsModalOpen(false);
-        const current = view;
-            setView('home');
-            setTimeout(() => setView(current), 10);
+          const current = view;
+          setView('home');
+          setTimeout(() => setView(current), 10);
         }}
       />
-      
     </div>
   );
 };

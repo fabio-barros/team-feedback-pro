@@ -79,6 +79,13 @@ export const FeedbackCard = ({ feedback, perspectiva }: FeedbackCardProps) => {
         "{feedback.content}"
       </p>
 
+      {feedback.status === 'Rejeitado' && (
+        <div className="card-rejection-notes">
+          <strong>Motivo da rejeição:</strong>
+          <p>"teste"</p>
+        </div>
+      )}
+
     </article>
   );
 };
