@@ -10,7 +10,7 @@ import './css/CadastroComponent.css';
 const registerSchema = z.object({
   nome: z.string().min(3, 'Nome deve ter no mínimo 3 letras'),
   email: z.string().email('Email inválido'),
-  cargo: z.enum(['1', '2', '3']), // valores do select
+  cargo: z.enum(['1', '2', '3']),
   time: z.string().optional(),
   senha: z.string()
     .min(8, 'Mínimo de 8 caracteres')
@@ -45,7 +45,7 @@ export const CadastroComponent = () => {
         name: data.nome,
         email: data.email,
         password: data.senha,
-        role: parseInt(data.cargo), // mapeia cargo para número
+        role: parseInt(data.cargo), 
         teamId: data.time || null
       };
 
