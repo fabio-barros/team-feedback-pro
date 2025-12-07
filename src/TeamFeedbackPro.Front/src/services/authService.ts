@@ -6,6 +6,7 @@ export const login = async (data: LoginRequest): Promise<AuthenticationResult> =
   if (response.data.token) {
     localStorage.setItem('access_token', response.data.token);
     localStorage.setItem('user_data', JSON.stringify(response.data.user));
+
   }
   return response.data;
 };
