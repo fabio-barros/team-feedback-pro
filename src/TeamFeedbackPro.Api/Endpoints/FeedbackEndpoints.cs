@@ -86,6 +86,7 @@ public static class FeedbackEndpoints
             .WithName("ApproveFeedback")
             .WithSummary("Approve feedback")
             .WithDescription("Approve feedback by manager on the pending feedbacks of them team")
+            .RequireAuthorization("ManagerOnly")
             .Produces<FeedbackFormDataResult>(200, contentType: "application/json")
             .ProducesProblem(401)
             .WithOpenApi();
@@ -94,6 +95,7 @@ public static class FeedbackEndpoints
             .WithName("RejectFeedback")
             .WithSummary("Reject feedback")
             .WithDescription("Reject feedback by manager on the pending feedbacks of them team")
+            .RequireAuthorization("ManagerOnly")
             .Produces(201, contentType: "application/json")
             .ProducesProblem(401)
             .WithOpenApi();

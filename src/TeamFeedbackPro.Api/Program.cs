@@ -55,5 +55,6 @@ app.MapAuthEndpoints();
 app.MapTeamEndpoints();
 app.MapUserEndpoints();
 app.MapFeedbackEndpoints();
+app.MapSprintEndpoints();
 
 app.Run();
