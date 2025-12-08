@@ -11,10 +11,13 @@ import {
 import type { PaginatedResult, FeedbackResult, UserProfile } from '../types';
 import { CadastroComponent } from '../components/features/cadastro/CadastroComponent';
 import { FeedbackPendingPage } from '../components/features/pending/PendingFeedbackPage';
+import { SprintConfigPage } from '../components/features/admin/SprintConfigPage';
+import { DashboardPage } from '../components/features/dashboard/DashboardPage';
+
 import { getMe } from '../services/authService';
 import './css/HomePage.css';
 
-type ViewState = 'home' | 'recebidos' | 'enviados' | 'novo-usuario'| 'pendentes';
+type ViewState = 'home' | 'recebidos' | 'enviados' | 'novo-usuario'| 'pendentes'| 'sprints' | 'dashboard';
 type HomePageProps = {
   onLogout: () => void; 
 };
@@ -27,13 +30,13 @@ export const HomePage = ({ onLogout }: HomePageProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const [role, setRole] = useState<number | null>(null); // ID da role
+  const [role, setRole] = useState<number | null>(null); 
   const [user, setUser] = useState<UserProfile | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const data = await getMe(); // pega do backend
+        const data = await getMe(); 
         setUser(data);
 
         // data.role já é number? Se vier string, converta:
@@ -47,7 +50,9 @@ export const HomePage = ({ onLogout }: HomePageProps) => {
   }, []);
 
   useEffect(() => {
-    if (view === 'home' || view === 'pendentes' || view === 'novo-usuario') {
+
+    const viewsSemFeedback = ['home', 'pendentes', 'novo-usuario', 'sprints', 'dashboard'];
+    if (viewsSemFeedback.includes(view)) {
       setFeedbacks([]);
       return;
     }
@@ -74,13 +79,18 @@ export const HomePage = ({ onLogout }: HomePageProps) => {
   }, [view]);
 
   const renderView = () => {
-    // ⚠️ Se role ainda não foi carregada, mostrar loading
-    if (role === null && (view === 'pendentes' || view === 'novo-usuario')) {
+
+    if (!user && (view === 'sprints' || view === 'dashboard')) {
+  return <Spinner />;
+}
+
+    const managerViews = ['pendentes', 'novo-usuario', 'sprints', 'dashboard'];
+    if (role === null && (managerViews.includes(view))) {
       return <Spinner />;
     }
 
     // Permissão apenas para managers (role === 1)
-    if ((view === 'pendentes' || view === 'novo-usuario') && role !== 1) {
+    if (managerViews.includes(view) && role !== 1) {
       return <p>Você não tem permissão para acessar esta página.</p>;
     }
 
@@ -106,10 +116,15 @@ export const HomePage = ({ onLogout }: HomePageProps) => {
           {view === 'enviados' && 'Feedbacks Enviados'}
           {view === 'pendentes' && 'Feedbacks Pendentes'}
           {view === 'novo-usuario' && 'Cadastro de Usuário'}
+          {view === 'sprints' && 'Configuração de Sprints'}
+          {view === 'dashboard' && 'Dashboard de Clima'}
         </h2>
 
         {view === 'novo-usuario' && role === 1 && <CadastroComponent />}
         {view === 'pendentes' && role === 1 && <FeedbackPendingPage />}
+
+        {view === 'sprints' && <SprintConfigPage user={user}/>}
+        {view === 'dashboard' && <DashboardPage user={user} />}
         {(view === 'recebidos' || view === 'enviados') && (
           <FeedbackList
             feedbacks={feedbacks}
@@ -126,7 +141,7 @@ export const HomePage = ({ onLogout }: HomePageProps) => {
         currentView={view} 
         onViewChange={(newView) => setView(newView as ViewState)} 
         onLogout={onLogout}
-        role={role} // agora role é número
+        role={role} 
       />
       
       <main className="painel-content">

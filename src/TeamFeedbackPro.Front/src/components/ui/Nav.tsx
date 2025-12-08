@@ -59,6 +59,22 @@ export const Nav = ({ currentView, onViewChange, onLogout, role }: navProps) => 
         Novo Usuário
       </button>
     </li>
+    <li className="nav-item">
+      <button 
+        className={`nav-button ${isActive('sprints') ? 'active' : ''}`}
+        onClick={() => onViewChange('sprints')}
+      >
+        Sprints
+      </button>
+    </li>
+    <li className="nav-item">
+      <button 
+        className={`nav-button ${isActive('dashboard') ? 'active' : ''}`}
+        onClick={() => onViewChange('dashboard')}
+      >
+        Dashboard
+      </button>
+    </li>
   </>
 )}
       </ul>

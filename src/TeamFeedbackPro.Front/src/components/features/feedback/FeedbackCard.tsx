@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { type FeedbackResult, type FeedbackStatus } from '../../../types';
+import { getEmojiForFeeling } from '../../../utils/feedbackUtils';
 import './css/FeedbackCard.css';
 import { getUserById } from '../../../services/userService';
+
+
 
 type FeedbackCardProps = {
   feedback: FeedbackResult;
@@ -42,7 +45,7 @@ export const FeedbackCard = ({ feedback, perspectiva }: FeedbackCardProps) => {
           setNomeExibicao(nomeNoObjeto);
         } else if (idParaBuscar) {
           const user = await getUserById(idParaBuscar);
-          setNomeExibicao(user.name); 
+          setNomeExibicao(user.name);
         } else {
           setNomeExibicao('Usuário Desconhecido');
         }
@@ -56,19 +59,35 @@ export const FeedbackCard = ({ feedback, perspectiva }: FeedbackCardProps) => {
 
   const titulo = perspectiva === 'author' ? `De: ${nomeExibicao}` : `Para: ${nomeExibicao}`;
   const dataFormatada = new Date(feedback.createdAt).toLocaleDateString('pt-BR');
+  
+
+
+
+  // Lógica da Emoção
+  const feelingText = feedback.feeling; 
+  const emoji = getEmojiForFeeling(feelingText);
 
   return (
     <article className="card">
       <header className="card-header">
         <div>
           <h3 className="card-titulo">{titulo}</h3>
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginTop: '4px' }}>
           <span className="card-date">{dataFormatada}</span>
+        {/* BADGE DE EMOÇÃO */}
+            {feelingText && (
+              <span className="feeling-badge" title={feelingText}>
+                {emoji} {feelingText}
+              </span>
+            )}
+          </div>
         </div>
 
-        {/* O Status Badge */}
-        <span className={`status-badge ${getStatusClass(feedback.status)}`}>
-          {feedback.status}
-        </span>
+          {/* O Status Badge */}
+          <span className={`status-badge ${getStatusClass(feedback.status)}`}>
+            {feedback.status}
+          </span>
+        
       </header>
 
       <div className="card-tags">

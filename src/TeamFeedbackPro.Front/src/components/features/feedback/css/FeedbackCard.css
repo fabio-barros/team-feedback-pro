@@ -98,3 +98,15 @@
   background-color: #f7deb0; 
   color: var(--cor-aviso);
 }
+.feeling-badge {
+  background-color: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #4a5568;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}

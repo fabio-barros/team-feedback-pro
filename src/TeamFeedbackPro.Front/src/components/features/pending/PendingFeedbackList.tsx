@@ -1,4 +1,3 @@
-import React from 'react';
 import type { FeedbackResult } from '../../../types';
 import { FeedbackPendingCard } from './PendingFeedbackCard';
 import './css/PendingFeedbackList.css';
