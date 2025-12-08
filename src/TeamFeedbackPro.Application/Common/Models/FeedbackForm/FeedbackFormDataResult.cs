@@ -6,5 +6,6 @@ public record FeedbackFormDataResult(
     List<KeyValuePair<int, string>> Types,
     List<KeyValuePair<int, string>> Categories,
     List<TeamMemberResult> Users,
-    List<KeyValuePair<Guid, string>> Feelings
+    List<KeyValuePair<Guid, string>> Feelings,
+    string Sprint
 );

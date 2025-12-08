@@ -47,6 +47,6 @@ public record CreateFeedbackRequest
     /// <summary>
     /// Feeling id
     /// </summary>
-    /// <example>false</example>
+    /// <example>cde6c8f6-d877-466c-805c-a333b5d590d4</example>
     public Guid? FeelingId { get; init; }
 }

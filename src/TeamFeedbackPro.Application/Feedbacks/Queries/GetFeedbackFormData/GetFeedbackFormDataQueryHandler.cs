@@ -13,6 +13,8 @@ namespace TeamFeedbackPro.Application.Feedbacks.Queries.GetSentFeedbacks;
 public class GetFeedbackFormDataQueryHandler(
     ISender mediator,
     IFeelingRepository feelingRepository,
+    IUserRepository userRepository,
+    ISprintRepository sprintRepository,
     ILogger<GetFeedbackFormDataQueryHandler> logger)
     : IRequestHandler<GetFeedbackFormDataQuery, Result<FeedbackFormDataResult>>
 {
@@ -39,7 +41,18 @@ public class GetFeedbackFormDataQueryHandler(
         var feelings = (await feelingRepository.GetAllAsync()).ToList();
         List<KeyValuePair<Guid, string>> feelingsKeyValue = [.. feelings.Select(f => new KeyValuePair<Guid,string>(f.Id, f.Name))];
 
-        var formData = new FeedbackFormDataResult(feedbackTypes, feedbackCategories, teamMembers, feelingsKeyValue);
+        var sprintName = "Não encontrada";
+        var author = await userRepository.GetByIdAsync(request.AuthorId);
+        if (author != null && author.TeamId.HasValue)
+        {
+            var sprint = await sprintRepository.GetActualSprintAsync(author.TeamId.Value);
+            if (sprint != null)
+            {
+                sprintName = sprint.Name;
+            }
+        }
+
+        var formData = new FeedbackFormDataResult(feedbackTypes, feedbackCategories, teamMembers, feelingsKeyValue, sprintName);
         logger.LogInformation("Retrieved form data");
 
         return Result.Success(formData);

@@ -33,6 +33,7 @@ public class GetReceivedFeedbacksQueryHandler(
             f.IsAnonymous,
             f.Status.ToDescription(),
             f.Feeling?.Name,
+            f.Sprint?.Name,
             f.CreatedAt
         ));
 

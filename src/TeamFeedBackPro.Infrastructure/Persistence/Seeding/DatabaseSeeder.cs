@@ -46,6 +46,13 @@ public static class DatabaseSeeder
 
         await context.SaveChangesAsync();
 
+        logger.LogInformation("Seeding sprints...");
+        
+        var sprintTeamEngineering = new Sprint("Sprint 1", "Sprint de inicio de desenvolvimento", new DateTime(2025,12,01), new DateTime(2025,12,07), teamEngineering.Id);
+        var sprintTeamMarketing = new Sprint("Sprint 1", "Sprint de inicio de desenvolvimento", new DateTime(2025,12,01), new DateTime(2025,12,07), teamMarketing.Id);
+        var sprintTeamProductDesign = new Sprint("Sprint 1", "Sprint de inicio de desenvolvimento", new DateTime(2025,12,01), new DateTime(2025,12,07), teamProductDesign.Id);
+        var sprintTeamDataScience = new Sprint("Sprint 1", "Sprint de inicio de desenvolvimento", new DateTime(2025,12,01), new DateTime(2025,12,07), teamDataScience.Id);
+
         logger.LogInformation("Seeding users...");
 
         // Create Users - Engineering Team
@@ -173,7 +180,8 @@ public static class DatabaseSeeder
                 FeedbackCategory.CodeQuality,
                 "Ótimo trabalho na revisão de código recente! Sua atenção aos detalhes nos ajudou a identificar vários possíveis bugs antes que chegassem à produção. Continue com o excelente trabalho.",
                 false,
-                teamEngineering.Id
+                teamEngineering.Id,
+                sprintTeamEngineering.Id
             ),
 
             new(
@@ -183,7 +191,8 @@ public static class DatabaseSeeder
                 FeedbackCategory.Communication,
                 "Agradeço suas contribuições nas nossas reuniões de sprint. No entanto, acho que poderíamos nos beneficiar de atualizações mais detalhadas sobre suas tarefas. Isso ajudaria a equipe a entender melhor as dependências.",
                 false,
-                teamEngineering.Id
+                teamEngineering.Id,
+                sprintTeamEngineering.Id
             ),
 
             new(
@@ -193,7 +202,8 @@ public static class DatabaseSeeder
                 FeedbackCategory.ProblemSolving,
                 "Excelente trabalho ao resolver aquele problema de desempenho nas consultas do banco de dados. Sua abordagem analítica e persistência realmente fizeram a diferença. O aplicativo agora está 40% mais rápido!",
                 false,
-                teamEngineering.Id
+                teamEngineering.Id,
+                sprintTeamEngineering.Id
             ),
 
             new(
@@ -203,7 +213,8 @@ public static class DatabaseSeeder
                 FeedbackCategory.Leadership,
                 "Obrigado pela excelente liderança durante o último sprint. Sua comunicação clara e apoio ajudaram a equipe a entregar no prazo, apesar dos desafios que enfrentamos.",
                 false,
-                teamEngineering.Id
+                teamEngineering.Id,
+                sprintTeamEngineering.Id
             ),
 
             new(
@@ -213,7 +224,8 @@ public static class DatabaseSeeder
                 FeedbackCategory.Teamwork,
                 "Você é um ótimo desenvolvedor, mas percebi que às vezes trabalha de forma isolada. Colaborar mais com a equipe durante a implementação pode levar a melhores soluções e compartilhamento de conhecimento.",
                 false,
-                teamEngineering.Id
+                teamEngineering.Id,
+                sprintTeamEngineering.Id
             ),
 
             // Marketing Team Feedbacks
@@ -224,7 +236,8 @@ public static class DatabaseSeeder
                 FeedbackCategory.Communication,
                 "Sua apresentação para os stakeholders foi excelente! Você comunicou métricas complexas de um jeito que todos puderam entender. Isso realmente ajudou a conquistar apoio para nossa nova campanha.",
                 false,
-                teamMarketing.Id
+                teamMarketing.Id,
+                sprintTeamMarketing.Id
             ),
 
             new(
@@ -234,7 +247,8 @@ public static class DatabaseSeeder
                 FeedbackCategory.Leadership,
                 "Agradeço muito como você vem me mentorando em estratégia de campanha. Sua orientação melhorou significativamente minha abordagem ao planejamento e execução de conteúdo.",
                 false,
-                teamMarketing.Id
+                teamMarketing.Id,
+                sprintTeamMarketing.Id
             ),
 
             new(
@@ -244,7 +258,8 @@ public static class DatabaseSeeder
                 FeedbackCategory.Other,
                 "Suas ideias criativas são fantásticas, mas notei que alguns prazos têm sido perdidos recentemente. Vamos trabalhar juntos para melhorar a gestão do tempo e a priorização de tarefas.",
                 false,
-                teamMarketing.Id
+                teamMarketing.Id,
+                sprintTeamMarketing.Id
             ),
 
             // Product & Design Team Feedbacks
@@ -255,7 +270,8 @@ public static class DatabaseSeeder
                 FeedbackCategory.CodeQuality,
                 "Os componentes de UI que você projetou não são apenas lindos, mas também altamente reutilizáveis. O sistema de design que você está construindo vai economizar inúmeras horas da equipe. Excelente trabalho!",
                 false,
-                teamProductDesign.Id
+                teamProductDesign.Id,
+                sprintTeamProductDesign.Id
             ),
 
             new(
@@ -265,7 +281,8 @@ public static class DatabaseSeeder
                 FeedbackCategory.ProblemSolving,
                 "Estou impressionado com a forma como você abordou os problemas de acessibilidade em nosso app. Sua pesquisa e implementação de labels ARIA e navegação por teclado demonstram verdadeira dedicação ao design inclusivo.",
                 false,
-                teamProductDesign.Id
+                teamProductDesign.Id,
+                sprintTeamProductDesign.Id
             ),
 
             // Data Science Team Feedbacks
@@ -276,7 +293,8 @@ public static class DatabaseSeeder
                 FeedbackCategory.Teamwork,
                 "Sua colaboração no modelo de ML foi excepcional. Você sempre esteve disposto a explicar conceitos complexos e ajudar a depurar problemas. Isso realmente acelerou o cronograma do projeto.",
                 false,
-                teamDataScience.Id
+                teamDataScience.Id,
+                sprintTeamDataScience.Id
             ),
 
             new(
@@ -286,7 +304,8 @@ public static class DatabaseSeeder
                 FeedbackCategory.Communication,
                 "Embora sua expertise técnica seja excelente, acho que nossas apresentações para stakeholders poderiam ser melhoradas simplificando o jargão técnico. Nem todos têm formação em ciência de dados.",
                 false,
-                teamDataScience.Id
+                teamDataScience.Id,
+                sprintTeamDataScience.Id
             ),
 
             new(
@@ -296,7 +315,8 @@ public static class DatabaseSeeder
                 FeedbackCategory.ProblemSolving,
                 "Sua abordagem inovadora de feature engineering melhorou significativamente a precisão do nosso modelo. Sua capacidade de pensar fora da caixa e experimentar novas técnicas é um grande diferencial para a equipe.",
                 false,
-                teamDataScience.Id
+                teamDataScience.Id,
+                sprintTeamDataScience.Id
             ),
 
             // Anonymous Feedback Examples
@@ -307,8 +327,9 @@ public static class DatabaseSeeder
                 FeedbackCategory.Leadership,
                 "Sinto que algumas decisões são tomadas sem contribuição suficiente da equipe. Maior transparência no processo de tomada de decisão ajudaria a construir confiança e garantir que todos estejamos alinhados nas prioridades.",
                 true,
-                teamDataScience.Id
-            ),
+                teamDataScience.Id,
+                sprintTeamDataScience.Id
+            ),  
 
             new(
                 memberMkt2.Id,
@@ -317,7 +338,8 @@ public static class DatabaseSeeder
                 FeedbackCategory.Teamwork,
                 "Às vezes, durante as discussões da equipe, você tende a dominar a conversa. Dar mais espaço para que os outros contribuam com suas ideias melhoraria nosso ambiente de colaboração.",
                 true,
-                teamDataScience.Id 
+                teamDataScience.Id,
+                sprintTeamDataScience.Id
             )
         };
 

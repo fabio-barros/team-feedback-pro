@@ -82,7 +82,10 @@ public class FeedbackConfiguration : IEntityTypeConfiguration<Feedback>
 
         builder.Property(f => f.FeelingId)
             .HasColumnName("feeling_id");
-
+        
+        builder.Property(f => f.SprintId)
+            .HasColumnName("sprint_id");
+        
         // Relationships
         builder.HasOne(f => f.Author)
             .WithMany()
@@ -103,6 +106,11 @@ public class FeedbackConfiguration : IEntityTypeConfiguration<Feedback>
             .WithMany()
             .HasForeignKey(f => f.TeamId)
             .OnDelete(DeleteBehavior.SetNull);
+        
+        builder.HasOne(f => f.Sprint)
+            .WithMany()
+            .HasForeignKey(f => f.SprintId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         // Indexes
         builder.HasIndex(f => f.AuthorId)

@@ -46,6 +46,7 @@ public class FeedbackRepository : IFeedbackRepository
             .Include(f => f.Recipient)
             .Include(f => f.Reviewer)
             .Include(f => f.Feeling)
+            .Include(f => f.Sprint)
             .Where(f => f.AuthorId == authorId);
 
         if (status.HasValue)
@@ -75,6 +76,7 @@ public class FeedbackRepository : IFeedbackRepository
             .Include(f => f.Recipient)
             .Include(f => f.Reviewer)
             .Include(f => f.Feeling)
+            .Include(f => f.Sprint)
             .Where(f => f.RecipientId == userId
                 && f.Status == FeedbackStatus.Approved);
 
@@ -104,6 +106,7 @@ public class FeedbackRepository : IFeedbackRepository
             .Include(f => f.Author)
             .Include(f => f.Recipient)
             .Include(f => f.Feeling)
+            .Include(f => f.Sprint)
             .Where(f => f.TeamId == teamId
                 && f.Status == FeedbackStatus.Pending);
 
@@ -124,6 +127,7 @@ public class FeedbackRepository : IFeedbackRepository
     {
         return await _context.Feedbacks
             .Include(f => f.Author)
+            .Include(f => f.Sprint)
             .Where(f => f.RecipientId == recipientId && f.Status == FeedbackStatus.Pending)
             .OrderByDescending(f => f.CreatedAt)
             .ToListAsync(cancellationToken);
