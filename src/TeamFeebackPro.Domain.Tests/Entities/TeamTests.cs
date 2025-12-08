@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using TeamFeedbackPro.Domain.Entities;
 
-namespace TeamFeebackPro.Domain.Tests.Entities;
+namespace TeamFeedbackPro.Domain.Tests.Entities;
 
 public class TeamTests
 {
