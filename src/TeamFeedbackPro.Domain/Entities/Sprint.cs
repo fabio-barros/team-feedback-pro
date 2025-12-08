@@ -21,5 +21,4 @@ public class Sprint : BaseEntity
         EndAt = endAt;
         TeamId = teamId;
     }
-
 }
