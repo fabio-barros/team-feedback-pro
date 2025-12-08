@@ -1,0 +1,20 @@
+.dashboard-container { padding: 1rem; }
+.sprints-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+.sprint-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  border: 1px solid #e2e8f0;
+}
+.chart-bars { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 1rem; }
+.bar-row { display: flex; align-items: center; gap: 0.5rem; }
+.bar-track { flex: 1; height: 10px; background: #EDF2F7; border-radius: 5px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 5px; transition: width 0.5s ease; }
+.bar-label { width: 20px; font-size: 1.2rem; }
+.bar-count { font-size: 0.85rem; color: #718096; width: 20px; text-align: right; }
