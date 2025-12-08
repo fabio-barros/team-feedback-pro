@@ -171,6 +171,33 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.feeling-badge,
+.feeling-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 16px;
+  background-color: #f7fafc;
+  border: 1px solid #e2e8f0;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #4a5568;
+  white-space: nowrap;
+}
+
+
+.feeling-negative {
+  background-color: #fff5f5;
+  color: #c53030;
+  border-color: #feb2b2;
+}
+
+.feeling-positive {
+  background-color: #f0fff4;
+  color: #2f855a;
+  border-color: #9ae6b4;
+}
 
 /* ------------------------------
    LIGHT MODE

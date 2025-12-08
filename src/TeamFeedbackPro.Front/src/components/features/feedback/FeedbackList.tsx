@@ -1,4 +1,3 @@
-import React from 'react';
 import type { FeedbackResult } from '../../../types';
 import { FeedbackCard } from './FeedbackCard';
 import './css/FeedbackList.css'; 

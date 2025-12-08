@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { FeedbackResult} from '../../../types';
+import { getEmojiForFeeling } from "../../../utils/feedbackUtils";
 import './css/PendingFeedbackCard.css';
 
 type FeedbackCardProps = {
@@ -12,6 +13,9 @@ export const FeedbackPendingCard = ({ feedback, onApproveRequest, onRejectReques
   const [status] = useState("Em análise");
 
   const dataFormatada = new Date(feedback.createdAt).toLocaleDateString('pt-BR');
+
+  const feelingText = feedback.feeling;
+  const emoji = getEmojiForFeeling(feelingText);
 
   const getStatusClass = () => {
     if (status === "Aprovado") return "status--aprovado";
@@ -27,8 +31,17 @@ export const FeedbackPendingCard = ({ feedback, onApproveRequest, onRejectReques
             {feedback.isAnonymous ? "Autor: Anônimo" : `Autor: ${feedback.authorName}`}
           </h3>
           <p className="card-subtitulo">Para: {feedback.recipientName}</p>
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginTop: '4px' }}>
           <span className="card-date">{dataFormatada}</span>
+          {/* 3. Badge de Emoção */}
+            {feelingText && (
+              <span className="feeling-badge" title={feelingText}>
+                {emoji} {feelingText}
+              </span>
+            )}
         </div>
+        </div>
+        
 
         <span className={`status-badge ${getStatusClass()}`}>
           {status}

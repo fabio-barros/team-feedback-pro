@@ -88,10 +88,11 @@ export interface TeamMemberResult {
 
 export interface CreateFeedbackRequest {
   recipientId: string;
-  type: FeedbackType | string;
-  category: FeedbackCategory | string;
+  type: number;
+  category: number;
   content: string;
   isAnonymous: boolean;
+  feelingId: string;
 }
 
 export interface FeedbackResult {
@@ -107,6 +108,7 @@ export interface FeedbackResult {
   type: FeedbackType | string;       
   category: FeedbackCategory | string;
   ReviewNotes: string;
+  feeling?: string;
 }
 
 export interface PaginatedResult<T> {
@@ -124,8 +126,47 @@ export interface LookupItem {
   value: string; 
 }
 
+export interface LookupItemString {
+  key: string;
+  value: string;
+}
+
 export interface FeedbackFormDataResult {
   users: TeamMemberResult[];
   types: LookupItem[];
   categories: LookupItem[];
+  feelings: LookupItemString[];
+  sprint?: string;
+}
+
+// ... tipos existentes
+
+export interface CreateSprintRequest {
+  name: string;
+  description?: string; 
+  startDate: string;    
+  endDate: string;      
+  teamId: string;       
+}
+
+
+export interface SprintResult {
+  id: string;
+  name: string;
+  startDate: string;
+  endDate: string;
+  teamId: string;
+}
+
+export interface DashboardData {
+  sprintName: string;
+  sprintId: string;
+  totalFeedbacks: number;
+  emotions: {
+    raiva: number;
+    triste: number;
+    surpreso: number;
+    feliz: number;
+    pensativo: number;
+  };
 }
