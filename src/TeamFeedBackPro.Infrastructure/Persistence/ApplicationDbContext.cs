@@ -10,6 +10,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Team> Teams => Set<Team>();
     public DbSet<Feeling> Feelings => Set<Feeling>();
     public DbSet<Feedback> Feedbacks => Set<Feedback>();
+    public DbSet<Sprint> Sprints => Set<Sprint>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -19,6 +20,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         modelBuilder.ApplyConfiguration(new TeamConfiguration());
         modelBuilder.ApplyConfiguration(new FeedbackConfiguration());
         modelBuilder.ApplyConfiguration(new FeelingConfiguration());
+        modelBuilder.ApplyConfiguration(new SprintConfiguration());
 
         modelBuilder.HasDefaultSchema("public");
     }

@@ -16,12 +16,14 @@ public class Feedback : BaseEntity
     public string? ReviewNotes { get; private set; }
     public Guid TeamId { get; private set; }
     public Guid? FeelingId { get; private set; }
+    public Guid? SprintId { get; private set; }
 
     public virtual User? Author { get; private set; }
     public virtual User? Recipient { get; private set; }
     public virtual User? Reviewer { get; private set; }
     public virtual Team? Team { get; private set; }
     public virtual Feeling? Feeling { get; private set; }
+    public virtual Sprint? Sprint { get; private set; }
 
     private Feedback() { } // EF Core
 
@@ -33,6 +35,7 @@ public class Feedback : BaseEntity
         string content,
         bool isAnonymous,
         Guid teamId,
+        Guid sprintId,
         Guid? feelingId=null)
     {
         if (authorId == recipientId)
@@ -58,6 +61,7 @@ public class Feedback : BaseEntity
         Status = FeedbackStatus.Pending;
         TeamId = teamId;
         FeelingId = feelingId;
+        SprintId = sprintId;
     }
 
     public void Approve(Guid reviewerId, string? notes = null)

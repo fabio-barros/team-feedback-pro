@@ -12,6 +12,7 @@ public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackComman
     private readonly IFeedbackRepository _feedbackRepository;
     private readonly IUserRepository _userRepository;
     private readonly IFeelingRepository _feelingRepository; 
+    private readonly ISprintRepository _sprintRepository; 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CreateFeedbackCommandHandler> _logger;
 
@@ -19,12 +20,14 @@ public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackComman
         IFeedbackRepository feedbackRepository,
         IUserRepository userRepository,
         IFeelingRepository feelingRepository,
+        ISprintRepository sprintRepository,
         IUnitOfWork unitOfWork,
         ILogger<CreateFeedbackCommandHandler> logger)
     {
         _feedbackRepository = feedbackRepository;
         _userRepository = userRepository;
         _feelingRepository = feelingRepository;
+        _sprintRepository = sprintRepository;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -70,6 +73,14 @@ public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackComman
             }
         }
 
+        // Validate if there is a actual sprint going
+        var sprint = await _sprintRepository.GetActualSprintAsync(author.TeamId.Value);
+        if (sprint == null)
+        {
+            _logger.LogWarning("There is no sprint going");
+            return Result.Failure<FeedbackResult>("There is no sprint going");
+        }
+
         var feedback = new Feedback(
             request.AuthorId,
             request.RecipientId,
@@ -78,6 +89,7 @@ public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackComman
             request.Content,
             request.IsAnonymous,
             author.TeamId.Value,
+            sprint.Id,
             request.FeelingId
         );
 
@@ -96,6 +108,7 @@ public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackComman
             feedback.IsAnonymous,
             feedback.Status.ToString(),
             feeling?.Name,
+            feedback.Sprint?.Name,
             feedback.CreatedAt
         ));
     }
