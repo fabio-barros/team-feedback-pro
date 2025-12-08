@@ -45,17 +45,17 @@ public class CreateSprintCommandHandler : IRequestHandler<CreateSprintCommand, R
             return Result.Failure<SprintResult>(ErrorMessages.TeamNotFound);
         }
 
-        // // Validate if sprint already exist
-        // var sprintExist = await _sprintRepository.ExistAsync(
-        //     request.StartAt.Date,
-        //     request.EndAt.Date,
-        //     manager.TeamId.Value
-        // );
-        // if (sprintExist)
-        // {
-        //     _logger.LogWarning("Sprint between {start} and {end} already exists", request.StartAt, request.EndAt);
-        //     return Result.Failure<SprintResult>(ErrorMessages.SprintAlreadyExistsByDate);
-        // }
+        // Validate if sprint already exist
+        var sprintExist = await _sprintRepository.ExistAsync(
+            request.StartAt.Date,
+            request.EndAt.Date,
+            manager.TeamId.Value
+        );
+        if (sprintExist)
+        {
+            _logger.LogWarning("Sprint between {start} and {end} already exists", request.StartAt, request.EndAt);
+            return Result.Failure<SprintResult>(ErrorMessages.SprintAlreadyExistsByDate);
+        }
 
         var sprint = new Sprint(
             request.Name,

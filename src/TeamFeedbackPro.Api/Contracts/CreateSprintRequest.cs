@@ -34,6 +34,6 @@ public record CreateSprintRequest
     /// <example>Just a example for a sprint description.</example>
     [MinLength(20)]
     [MaxLength(2000)]
-    public required string Description { get; init; }
+    public string? Description { get; init; }
 
 }
