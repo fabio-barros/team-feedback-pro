@@ -21,13 +21,14 @@ public class SprintRepository(ApplicationDbContext context) : ISprintRepository
         return sprint;
     }
 
-    public async Task<bool> ExistAsync(
-        DateTime startAt,
-        DateTime endAt,
-        Guid teamId,
-        CancellationToken cancellationToken = default)
-    {
-        return context.Sprints.Any(s => s.TeamId == teamId &&
-            (s.StartAt.Date <= endAt.Date || startAt.Date <= s.EndAt));
-    }
+    // public async Task<bool> ExistAsync(
+    //     DateTime startAt,
+    //     DateTime endAt,
+    //     Guid teamId,
+    //     CancellationToken cancellationToken = default)
+    // {
+    //     return context.Sprints.Any(s => s.TeamId == teamId &&
+    //         ((s) ||
+    //             ()));
+    // }
 }
