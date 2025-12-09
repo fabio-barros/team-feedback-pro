@@ -4,11 +4,10 @@ using TeamFeedbackPro.Application.Common;
 using TeamFeedbackPro.Application.Common.Abstractions;
 using TeamFeedbackPro.Application.Common.Models;
 using TeamFeedbackPro.Application.Common.Models.FeedbackForm;
-using TeamFeedbackPro.Application.Feedbacks.Queries.GetFeedbackFormData;
 using TeamFeedbackPro.Application.Users.Queries.GetTeamMembers;
 using TeamFeedbackPro.Domain.Enums;
 
-namespace TeamFeedbackPro.Application.Feedbacks.Queries.GetSentFeedbacks;
+namespace TeamFeedbackPro.Application.Feedbacks.Queries.GetFeedbackFormData;
 
 public class GetFeedbackFormDataQueryHandler(
     ISender mediator,

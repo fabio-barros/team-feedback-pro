@@ -9,4 +9,13 @@ public class Feeling : BaseEntity
 
     private Feeling() { } // EF Core
 
+    public Feeling(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("Name cannot be empty", nameof(name));
+        Name = name.Trim();
+    }
+
+
+
 }

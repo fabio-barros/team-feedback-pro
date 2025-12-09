@@ -2,10 +2,9 @@
 using Microsoft.Extensions.Logging;
 using TeamFeedbackPro.Application.Common.Abstractions;
 using TeamFeedbackPro.Application.Common.Models;
-using TeamFeedbackPro.Application.Feedbacks.Queries.GetReceivedFeedbacks;
 using TeamFeedbackPro.Domain.Enums;
 
-namespace TeamFeedbackPro.Application.Feedbacks.Queries.GetSentFeedbacks;
+namespace TeamFeedbackPro.Application.Feedbacks.Queries.GetReceivedFeedbacks;
 
 public class GetReceivedFeedbacksQueryHandler(
     IFeedbackRepository feedbackRepository,
