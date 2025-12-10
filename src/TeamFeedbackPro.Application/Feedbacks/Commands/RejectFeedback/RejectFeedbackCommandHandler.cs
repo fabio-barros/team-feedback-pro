@@ -8,18 +8,18 @@ using TeamFeedbackPro.Domain.Enums;
 
 namespace TeamFeedbackPro.Application.Feedbacks.Commands.RejectFeedback;
 
-public class ApproveFeedbackCommandHandler : IRequestHandler<RejectFeedbackCommand, Result<bool>>
+public class RejectFeedbackCommandHandler : IRequestHandler<RejectFeedbackCommand, Result<bool>>
 {
     private readonly IFeedbackRepository _feedbackRepository;
     private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<ApproveFeedbackCommandHandler> _logger;
+    private readonly ILogger<RejectFeedbackCommandHandler> _logger;
 
-    public ApproveFeedbackCommandHandler(
+    public RejectFeedbackCommandHandler(
         IFeedbackRepository feedbackRepository,
         IUserRepository userRepository,
         IUnitOfWork unitOfWork,
-        ILogger<ApproveFeedbackCommandHandler> logger)
+        ILogger<RejectFeedbackCommandHandler> logger)
     {
         _feedbackRepository = feedbackRepository;
         _userRepository = userRepository;

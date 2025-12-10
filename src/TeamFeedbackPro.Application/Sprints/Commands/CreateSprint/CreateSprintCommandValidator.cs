@@ -2,9 +2,9 @@
 
 namespace TeamFeedbackPro.Application.Sprints.Commands.CreateSprint;
 
-public class CreateFeedbackCommandValidator : AbstractValidator<CreateSprintCommand>
+public class CreateSprintCommandValidator : AbstractValidator<CreateSprintCommand>
 {
-    public CreateFeedbackCommandValidator()
+    public CreateSprintCommandValidator()
     {
         RuleFor(x => x.Name)
             .NotNull()

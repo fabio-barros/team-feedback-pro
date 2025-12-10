@@ -1,8 +1,7 @@
 ﻿using MediatR;
 using TeamFeedbackPro.Application.Common.Models;
-using TeamFeedbackPro.Domain.Enums;
 
-namespace TeamFeedbackPro.Application.Feedbacks.Queries.GetReceivedFeedbacks;
+namespace TeamFeedbackPro.Application.Feedbacks.Queries.GetPendingFeedbacks;
 
 public record GetPendingFeedbacksQuery(
     Guid ManagerId,
