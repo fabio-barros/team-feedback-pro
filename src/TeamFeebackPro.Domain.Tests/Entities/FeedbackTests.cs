@@ -14,11 +14,12 @@ public class FeedbackTests
         var authorId = Guid.NewGuid();
         var recipientId = Guid.NewGuid();
         var teamId = Guid.NewGuid();
+        var sprintId = Guid.NewGuid();
         const FeedbackType type = FeedbackType.Positive;
         const FeedbackCategory category = FeedbackCategory.Communication;
 
         // Act
-        var sut = new Feedback(authorId, recipientId, type, category, content, false, teamId);
+        var sut = new Feedback(authorId, recipientId, type, category, content, false, teamId, sprintId);
 
         // Assert
         sut.Content.Should().Be(content);
@@ -29,6 +30,8 @@ public class FeedbackTests
         sut.IsAnonymous.Should().BeFalse();
         sut.Status.Should().Be(FeedbackStatus.Pending);
         sut.TeamId.Should().Be(teamId);
+        sut.SprintId.Should().Be(sprintId);
+        sut.FeelingId.Should().BeNull();
         sut.ReviewedBy.Should().BeNull();
         sut.ReviewedAt.Should().BeNull();
         sut.ReviewNotes.Should().BeNull();
@@ -44,12 +47,38 @@ public class FeedbackTests
         var authorId = Guid.NewGuid();
         var recipientId = Guid.NewGuid();
         var teamId = Guid.NewGuid();
+        var sprintId = Guid.NewGuid();
 
         // Act
-        var sut = new Feedback(authorId, recipientId, FeedbackType.Constructive, FeedbackCategory.CodeQuality, content, true, teamId);
+        var sut = new Feedback(authorId, recipientId, FeedbackType.Constructive, FeedbackCategory.CodeQuality, content, true, teamId, sprintId);
 
         // Assert
         sut.IsAnonymous.Should().BeTrue();
+    }
+
+    [Fact]
+    public void Feedback_Constructor_WithFeelingId_ShouldSetFeelingId()
+    {
+        // Arrange
+        var feelingId = Guid.NewGuid();
+        var sprintId = Guid.NewGuid();
+        var teamId = Guid.NewGuid();
+
+        // Act
+        var sut = CreateTestFeedback(teamId: teamId, sprintId: sprintId, feelingId: feelingId);
+
+        // Assert
+        sut.FeelingId.Should().Be(feelingId);
+    }
+
+    [Fact]
+    public void Feedback_Constructor_WithoutFeelingId_ShouldHaveNullFeelingId()
+    {
+        // Arrange & Act
+        var sut = CreateTestFeedback();
+
+        // Assert
+        sut.FeelingId.Should().BeNull();
     }
 
     [Fact]
@@ -58,9 +87,10 @@ public class FeedbackTests
         // Arrange
         const string content = "  This is feedback with spaces at both ends that should be trimmed properly.  ";
         var teamId = Guid.NewGuid();
+        var sprintId = Guid.NewGuid();
 
         // Act
-        var sut = CreateTestFeedback(content: content, teamId: teamId);
+        var sut = CreateTestFeedback(content: content, teamId: teamId, sprintId: sprintId);
 
         // Assert
         sut.Content.Should().Be(content.Trim());
@@ -72,9 +102,10 @@ public class FeedbackTests
         // Arrange
         var userId = Guid.NewGuid();
         var teamId = Guid.NewGuid();
+        var sprintId = Guid.NewGuid();
 
         // Act
-        var act = () => new Feedback(userId, userId, FeedbackType.Positive, FeedbackCategory.Communication, "Valid content with more than twenty characters", false, teamId);
+        var act = () => new Feedback(userId, userId, FeedbackType.Positive, FeedbackCategory.Communication, "Valid content with more than twenty characters", false, teamId, sprintId);
 
         // Assert
         act.Should().Throw<ArgumentException>()
@@ -89,9 +120,10 @@ public class FeedbackTests
     {
         // Arrange
         var teamId = Guid.NewGuid();
+        var sprintId = Guid.NewGuid();
 
         // Act
-        var act = () => CreateTestFeedback(content: invalidContent, teamId: teamId);
+        var act = () => CreateTestFeedback(content: invalidContent, teamId: teamId, sprintId: sprintId);
 
         // Assert
         act.Should().Throw<ArgumentException>()
@@ -107,9 +139,10 @@ public class FeedbackTests
     {
         // Arrange
         var teamId = Guid.NewGuid();
+        var sprintId = Guid.NewGuid();
 
         // Act
-        var act = () => CreateTestFeedback(content: shortContent, teamId: teamId);
+        var act = () => CreateTestFeedback(content: shortContent, teamId: teamId, sprintId: sprintId);
 
         // Assert
         act.Should().Throw<ArgumentException>()
@@ -123,9 +156,10 @@ public class FeedbackTests
         // Arrange
         var longContent = new string('a', 2001);
         var teamId = Guid.NewGuid();
+        var sprintId = Guid.NewGuid();
 
         // Act
-        var act = () => CreateTestFeedback(content: longContent, teamId: teamId);
+        var act = () => CreateTestFeedback(content: longContent, teamId: teamId, sprintId: sprintId);
 
         // Assert
         act.Should().Throw<ArgumentException>()
@@ -139,9 +173,10 @@ public class FeedbackTests
         // Arrange
         const string content = "12345678901234567890"; // Exactly 20 chars
         var teamId = Guid.NewGuid();
+        var sprintId = Guid.NewGuid();
 
         // Act
-        var sut = CreateTestFeedback(content: content, teamId: teamId);
+        var sut = CreateTestFeedback(content: content, teamId: teamId, sprintId: sprintId);
 
         // Assert
         sut.Content.Should().Be(content);
@@ -153,9 +188,10 @@ public class FeedbackTests
         // Arrange
         var content = new string('a', 2000); // Exactly 2000 chars
         var teamId = Guid.NewGuid();
+        var sprintId = Guid.NewGuid();
 
         // Act
-        var sut = CreateTestFeedback(content: content, teamId: teamId);
+        var sut = CreateTestFeedback(content: content, teamId: teamId, sprintId: sprintId);
 
         // Assert
         sut.Content.Should().HaveLength(2000);
@@ -278,9 +314,10 @@ public class FeedbackTests
     {
         // Arrange
         var teamId = Guid.NewGuid();
+        var sprintId = Guid.NewGuid();
 
         // Act
-        var sut = CreateTestFeedback(type: type, teamId: teamId);
+        var sut = CreateTestFeedback(type: type, teamId: teamId, sprintId: sprintId);
 
         // Assert
         sut.Type.Should().Be(type);
@@ -297,9 +334,10 @@ public class FeedbackTests
     {
         // Arrange
         var teamId = Guid.NewGuid();
+        var sprintId = Guid.NewGuid();
 
         // Act
-        var sut = CreateTestFeedback(category: category, teamId: teamId);
+        var sut = CreateTestFeedback(category: category, teamId: teamId, sprintId: sprintId);
 
         // Assert
         sut.Category.Should().Be(category);
@@ -354,6 +392,7 @@ public class FeedbackTests
         sut.Recipient.Should().BeNull();
         sut.Reviewer.Should().BeNull();
         sut.Team.Should().BeNull();
+        sut.Sprint.Should().BeNull();
     }
 
     [Fact]
@@ -392,7 +431,9 @@ public class FeedbackTests
         string content = "This is a valid feedback message with enough characters to pass validation rules.",
         FeedbackType type = FeedbackType.Positive,
         FeedbackCategory category = FeedbackCategory.Communication,
-        Guid? teamId = null)
+        Guid? teamId = null,
+        Guid? sprintId = null,
+        Guid? feelingId = null)
     {
         return new Feedback(
             Guid.NewGuid(),
@@ -401,7 +442,9 @@ public class FeedbackTests
             category,
             content,
             false,
-            teamId ?? Guid.NewGuid()
+            teamId ?? Guid.NewGuid(),
+            sprintId ?? Guid.NewGuid(),
+            feelingId
         );
     }
 }
