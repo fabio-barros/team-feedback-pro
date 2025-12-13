@@ -1,11 +1,10 @@
 import api from './api';
 import type { CreateSprintRequest, DashboardData } from '../types';
 
-// Mock ou chamada real
-export const createSprint = async (config: CreateSprintRequest): Promise<void> => {
-  // await api.post('/sprints/configure', config);
-  console.log("Configurando sprints:", config);
-  return Promise.resolve();
+
+export const createSprint = async (data: CreateSprintRequest): Promise<void> => {
+   await api.post('/sprints', data);
+  
 };
 
 export const getDashboardData = async (): Promise<DashboardData[]> => {
