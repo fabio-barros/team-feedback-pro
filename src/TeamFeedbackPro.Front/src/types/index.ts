@@ -93,7 +93,9 @@ export interface CreateFeedbackRequest {
   content: string;
   isAnonymous: boolean;
   feelingId: string;
+  improvementSuggestion?: string | null;
 }
+
 
 export interface FeedbackResult {
   id: string;

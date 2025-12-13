@@ -17,10 +17,22 @@ const feedbackSchema = z.object({
   recipientId: z.string().min(1, 'Selecione um destinatário'),
   feelingId: z.string().min(1, 'Como você se sente na Sprint?'),
   content: z.string().min(20, 'Mínimo de 20 caracteres').max(2000, 'Máximo de 2000'),
-  type: z.coerce.number(),
-  category: z.coerce.number(),
-  isAnonymous: z.boolean()
+
+  improvementSuggestion: z
+    .string()
+    .max(2000, 'Máximo de 2000')
+    .optional()
+    .or(z.literal(''))
+    .refine(
+    v => !v || v.trim().length >= 20,
+    'Sugestão de melhoria deve ter no mínimo 20 caracteres'),
+  type: z.preprocess((v) => Number(v), z.number()),
+  category: z.preprocess((v) => Number(v), z.number()),
+  isAnonymous: z.boolean(),
 });
+
+
+
 
 type FeedbackFormInputs = z.infer<typeof feedbackSchema>;
 
@@ -53,10 +65,11 @@ export const FeedbackCreateModal = ({ isOpen, onClose, onFeedbackEnviado }: Feed
       recipientId: '',
       feelingId: '',
       content: '',
+      improvementSuggestion: '',
       type: 0,
       category: 0,
       isAnonymous: false,
-    }
+    },
   });
 
   const selectedFeeling = watch('feelingId');
@@ -83,6 +96,9 @@ export const FeedbackCreateModal = ({ isOpen, onClose, onFeedbackEnviado }: Feed
         ...data,
         type: data.type ,
         category: data.category ,
+        improvementSuggestion: data.improvementSuggestion?.trim()
+          ? data.improvementSuggestion.trim()
+          : null
       };
 
       await createFeedback(payload);
@@ -175,6 +191,21 @@ export const FeedbackCreateModal = ({ isOpen, onClose, onFeedbackEnviado }: Feed
           />
           {errors.content && <span className="erro">{errors.content.message}</span>}
         </div>
+
+        {/* NOVO: Sugestão de melhoria (opcional) */}
+        <div className="form-group">
+          <label>Sugestão de melhoria (opcional):</label>
+          <textarea
+            {...register('improvementSuggestion')}
+            rows={4}
+            placeholder="Ex: Sugiro que... / Poderíamos melhorar..."
+          />
+          {errors.improvementSuggestion && (
+            <span className="erro">{errors.improvementSuggestion.message?.toString()}</span>
+          )}
+        </div>
+
+
 
         {/* 4. Anônimo */}
         <div className="form-group checkbox">

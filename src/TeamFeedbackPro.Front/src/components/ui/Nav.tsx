@@ -25,6 +25,17 @@ export const Nav = ({ currentView, onViewChange, onLogout, role }: navProps) => 
             Início
           </button>
         </li>
+
+        <li className="nav-item">
+          <button 
+            className={`nav-button ${isActive('recebidos') ? 'active' : ''}`}
+            onClick={() => onViewChange('recebidos')}
+          >
+            Reconhecimentos
+          </button>
+        </li>
+
+  
         <li className="nav-item">
           <button 
             className={`nav-button ${isActive('recebidos') ? 'active' : ''}`}
@@ -33,6 +44,9 @@ export const Nav = ({ currentView, onViewChange, onLogout, role }: navProps) => 
             Feedbacks Recebidos
           </button>
         </li>
+
+
+
         <li className="nav-item">
           <button 
             className={`nav-button ${isActive('enviados') ? 'active' : ''}`}
@@ -41,7 +55,7 @@ export const Nav = ({ currentView, onViewChange, onLogout, role }: navProps) => 
             Feedbacks Enviados
           </button>
         </li>
-         {role === 1 && (
+        {role === 1 && (
   <>
     <li className="nav-item">
       <button 
