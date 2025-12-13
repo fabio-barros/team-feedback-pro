@@ -12,7 +12,6 @@ import './css/SprintConfigPage.css';
 const sprintSchema = z.object({
   name: z.string().min(3, 'Nome deve ter no mínimo 3 caracteres'),
   description: z.string().optional(),
-  teamId: z.string().min(1, 'Selecione um time'),
   startDate: z.string().min(1, 'Data inicial obrigatória'),
   endDate: z.string().min(1, 'Data final obrigatória'),
 }).refine((data) => new Date(data.endDate) > new Date(data.startDate), {
@@ -57,9 +56,8 @@ export const SprintConfigPage = ({ user }: Props) => {
       const payload: CreateSprintRequest = {
         name: data.name,
         description: data.description,
-        startDate: new Date(data.startDate).toISOString(), 
-        endDate: new Date(data.endDate).toISOString(),
-        teamId: user.teamId
+        startAt: new Date(data.startDate).toISOString(), 
+        endAt: new Date(data.endDate).toISOString()
       };
 
       await createSprint(payload);

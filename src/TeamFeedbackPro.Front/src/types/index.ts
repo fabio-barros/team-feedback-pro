@@ -144,18 +144,16 @@ export interface FeedbackFormDataResult {
 export interface CreateSprintRequest {
   name: string;
   description?: string; 
-  startDate: string;    
-  endDate: string;      
-  teamId: string;       
+  startAt: string;    
+  endAt: string;       
 }
 
 
 export interface SprintResult {
   id: string;
   name: string;
-  startDate: string;
-  endDate: string;
-  teamId: string;
+  startAt: string;
+  endAt: string;
 }
 
 export interface DashboardData {
