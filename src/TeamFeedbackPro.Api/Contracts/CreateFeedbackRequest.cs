@@ -49,4 +49,12 @@ public record CreateFeedbackRequest
     /// </summary>
     /// <example>cde6c8f6-d877-466c-805c-a333b5d590d4</example>
     public Guid? FeelingId { get; init; }
+
+    /// <summary>
+    /// Improvement suggestion content (min 20, max 2000 characters)
+    /// </summary>
+    /// <example>You should study more of unit of work</example>
+    [MinLength(20)]
+    [MaxLength(2000)]
+    public string ImprovementSuggestion { get; init; }
 }

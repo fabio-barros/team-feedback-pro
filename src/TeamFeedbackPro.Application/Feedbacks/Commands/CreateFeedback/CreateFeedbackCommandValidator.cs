@@ -23,5 +23,9 @@ public class CreateFeedbackCommandValidator : AbstractValidator<CreateFeedbackCo
             .NotEmpty().WithMessage("Content is required")
             .MinimumLength(20).WithMessage("Content must be at least 20 characters")
             .MaximumLength(2000).WithMessage("Content must not exceed 2000 characters");
+
+        RuleFor(x => x.ImprovementSuggestion)
+            .MinimumLength(20).WithMessage("Improvement suggestion must be at least 20 characters")
+            .MaximumLength(2000).WithMessage("Improvement suggestion must not exceed 2000 characters");
     }
 }

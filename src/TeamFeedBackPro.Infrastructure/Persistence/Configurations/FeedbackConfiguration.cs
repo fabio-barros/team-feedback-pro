@@ -112,6 +112,10 @@ public class FeedbackConfiguration : IEntityTypeConfiguration<Feedback>
             .HasForeignKey(f => f.SprintId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        builder.Property(f => f.ImprovementSuggestion)
+            .HasMaxLength(2000)
+            .HasColumnName("improvement_suggestion");
+
         // Indexes
         builder.HasIndex(f => f.AuthorId)
             .HasDatabaseName("ix_feedbacks_author_id");

@@ -33,6 +33,7 @@ public class GetSentFeedbacksQueryHandler(
             f.Status.ToDescription(),
             f.Feeling?.Name,
             f.Sprint?.Name,
+            f.ImprovementSuggestion,
             f.CreatedAt
         ));
 

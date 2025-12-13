@@ -20,7 +20,8 @@ public class CreateSprintCommandValidator : AbstractValidator<CreateSprintComman
             .WithMessage("Start date is required");
 
         RuleFor(x => x.Description)
-            .MinimumLength(20).WithMessage("Content must be at least 20 characters")
-            .MaximumLength(2000).WithMessage("Content must not exceed 2000 characters");
+            .MinimumLength(20).WithMessage("Description must be at least 20 characters")
+            .MaximumLength(2000).WithMessage("Description must not exceed 2000 characters")
+            .When(x => !string.IsNullOrWhiteSpace(x.Description));
     }
 }

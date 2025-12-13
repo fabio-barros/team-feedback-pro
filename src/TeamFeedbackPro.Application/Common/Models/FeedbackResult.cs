@@ -10,6 +10,7 @@ public record FeedbackResult(
     bool IsAnonymous,
     string Status,
     string Feeling,
-    string? sprint,
+    string? Sprint,
+    string? ImprovementSuggestion,
     DateTime CreatedAt
 );
