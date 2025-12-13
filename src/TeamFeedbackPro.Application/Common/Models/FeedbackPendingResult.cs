@@ -13,5 +13,6 @@ public record FeedbackPendingResult(
     string Status,
     string Feeling,
     string sprint,
+    string? improvementSuggestion,
     DateTime CreatedAt
 );

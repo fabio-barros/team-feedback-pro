@@ -6,7 +6,7 @@ namespace TeamFeedbackPro.Application.Sprints.Commands.CreateSprint;
 public record CreateSprintCommand(
     Guid ManagerId,
     string Name,
-    string Description,
+    string? Description,
     DateTime StartAt,
     DateTime EndAt
 ) : IRequest<Result<SprintResult>>;

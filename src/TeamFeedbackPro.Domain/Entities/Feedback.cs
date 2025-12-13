@@ -17,6 +17,7 @@ public class Feedback : BaseEntity
     public Guid TeamId { get; private set; }
     public Guid? FeelingId { get; private set; }
     public Guid? SprintId { get; private set; }
+    public string? ImprovementSuggestion { get; private set; }
 
     public virtual User? Author { get; private set; }
     public virtual User? Recipient { get; private set; }
@@ -36,7 +37,8 @@ public class Feedback : BaseEntity
         bool isAnonymous,
         Guid teamId,
         Guid sprintId,
-        Guid? feelingId=null)
+        Guid? feelingId=null,
+        string? improvementSuggestion=null)
     {
         if (authorId == recipientId)
             throw new ArgumentException("Cannot send feedback to yourself");
@@ -62,6 +64,7 @@ public class Feedback : BaseEntity
         TeamId = teamId;
         FeelingId = feelingId;
         SprintId = sprintId;
+        ImprovementSuggestion = improvementSuggestion;
     }
 
     public void Approve(Guid reviewerId, string? notes = null)

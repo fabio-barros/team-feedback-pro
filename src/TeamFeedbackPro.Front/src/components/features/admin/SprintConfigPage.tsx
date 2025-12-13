@@ -66,7 +66,7 @@ export const SprintConfigPage = ({ user }: Props) => {
       reset();
     } catch (error) {
       console.error(error);
-      alert('Erro ao criar sprint.');
+      alert(error.response.data.message);
     }
   };
 

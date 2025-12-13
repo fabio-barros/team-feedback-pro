@@ -90,7 +90,8 @@ public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackComman
             request.IsAnonymous,
             author.TeamId.Value,
             sprint.Id,
-            request.FeelingId
+            request.FeelingId,
+            request.ImprovementSuggestion
         );
 
         await _feedbackRepository.AddAsync(feedback, cancellationToken);
@@ -109,6 +110,7 @@ public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackComman
             feedback.Status.ToString(),
             feeling?.Name,
             feedback.Sprint?.Name,
+            feedback.ImprovementSuggestion,
             feedback.CreatedAt
         ));
     }

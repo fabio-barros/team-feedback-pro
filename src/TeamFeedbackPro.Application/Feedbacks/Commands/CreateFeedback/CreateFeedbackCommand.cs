@@ -11,5 +11,6 @@ public record CreateFeedbackCommand(
     FeedbackCategory Category,
     string Content,
     bool IsAnonymous, 
-    Guid? FeelingId
+    Guid? FeelingId,
+    string? ImprovementSuggestion
 ) : IRequest<Result<FeedbackResult>>;
